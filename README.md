@@ -5,11 +5,13 @@ A mobile fitness/wellness app interface built from Figma design components.
 ## 🚀 Quick Start
 
 1. **Open the project:**
-   - Simply open `index.html` in your browser
+   - Simply open `index.html` in your browser (shows device mockup on dark background)
+   - Or open `screen.html` directly to see just the app
    - No build process needed!
 
 2. **View on mobile:**
-   - Open browser dev tools (F12)
+   - The `index.html` shows a device mockup (best for presentations)
+   - Open browser dev tools (F12) with `screen.html` for mobile testing
    - Toggle device toolbar (Ctrl/Cmd + Shift + M)
    - Select iPhone 12 or similar mobile device
 
@@ -17,8 +19,9 @@ A mobile fitness/wellness app interface built from Figma design components.
 
 ```
 Hackathon/
-├── index.html          # Main HTML file
-├── styles.css          # Custom CSS styles
+├── index.html          # Device mockup showcase (dark background + phone frame)
+├── screen.html         # Your actual app (mobile interface)
+├── styles.css          # Custom CSS styles for the app
 └── README.md          # This file
 ```
 
@@ -65,7 +68,7 @@ Currently using placeholder images. Replace them with your actual images:
 1. Create an `assets/images/` folder
 2. Export your images from Figma
 3. Save them in the assets folder
-4. Update the `src` attributes in `index.html`
+4. Update the `src` attributes in `screen.html`
 
 Example:
 ```html
@@ -89,7 +92,7 @@ Edit the CSS variables in `styles.css`:
 ```
 
 ### Adding More Sections
-The HTML follows a simple pattern:
+Edit `screen.html`. The HTML follows a simple pattern:
 ```html
 <section class="section">
     <div class="section-header">
@@ -137,7 +140,7 @@ To add more carousel items:
    - Select component in Figma Dev Mode
    - Copy CSS from the Code panel
    - Paste into `styles.css`
-   - Copy HTML structure into `index.html`
+   - Copy HTML structure into `screen.html`
 
 3. **Add interactivity**:
    - Search functionality
@@ -147,22 +150,28 @@ To add more carousel items:
 
 ## 💡 Tips
 
-- Use the browser's device emulator for testing
+- Use the browser's device emulator for testing `screen.html`
+- Use `index.html` for presentations and demos (dark background + device frame)
 - All SVG icons are embedded (no external files needed)
 - Tailwind CSS is loaded via CDN for utility classes
 - The design is mobile-first (375px width)
 
 ## 🎯 What's Working
 
+- ✅ Device mockup presentation (index.html)
+- ✅ Mobile app interface (screen.html)
 - ✅ Layout and spacing
 - ✅ Typography and fonts
 - ✅ Colors and gradients
 - ✅ Icons and graphics
 - ✅ Navigation UI
 - ✅ Scrolling carousels
+- ✅ Dark background showcase
 
 ## 📝 Notes
 
+- `index.html` = Main entry point with device mockup on dark background
+- `screen.html` = The actual mobile app interface (375x831px)
 - The status bar mimics iPhone 12 design
 - Bottom navigation has 5 tabs (Home, Search, Add Credits, Upcoming, Profile)
 - Currently showing placeholder content

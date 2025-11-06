@@ -56,6 +56,12 @@ body {
     align-items: flex-start;
     min-height: 100vh;
     padding: 20px 0;
+    /* Disable text selection globally */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 button {
@@ -63,11 +69,25 @@ button {
     background: none;
     cursor: pointer;
     font-family: inherit;
+    /* Disable text selection on buttons */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 img {
     display: block;
     max-width: 100%;
+    /* Disable text/image selection */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+    pointer-events: auto;
 }
 
 /* ============================================
@@ -81,6 +101,12 @@ img {
     box-shadow: var(--shadow-sm);
     overflow: hidden;
     position: relative;
+    /* Disable text selection */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* ============================================
@@ -159,6 +185,12 @@ img {
     align-items: center;
     justify-content: center;
     transition: background 0.2s;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .search-btn:hover {
@@ -188,6 +220,8 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 .section-header h2 {
@@ -195,12 +229,43 @@ img {
     font-weight: 700;
     line-height: 28px;
     color: var(--color-primary);
+    transition: color 0.3s ease;
+}
+
+.section-header h2.ai-active {
+    color: #5F53FF;
 }
 
 .section-actions {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
+}
+
+.section-actions svg {
+    cursor: pointer;
+    transition: transform 0.2s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.section-actions svg:hover {
+    transform: scale(1.1);
+}
+
+svg {
+    /* Disable text selection on all SVGs */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hidden state */
+.hidden {
+    display: none !important;
 }
 
 /* ============================================
@@ -224,6 +289,12 @@ img {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .carousel-img {
@@ -278,6 +349,58 @@ img {
 }
 
 /* ============================================
+   AI INPUT BOX
+   ============================================ */
+.ai-input-container {
+    width: 100%;
+    padding: 10px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #E3E4E4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ai-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: var(--font-size-base);
+    font-family: var(--font-family);
+    color: var(--color-primary);
+    background: transparent;
+    /* Re-enable text selection for input */
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+.ai-input::placeholder {
+    color: rgba(0, 0, 0, 0.46);
+}
+
+.ai-input-icon {
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+/* ============================================
    PROMO CARDS
    ============================================ */
 .promo-cards {
@@ -321,6 +444,12 @@ img {
     line-height: 20px;
     transition: background 0.2s;
     width: fit-content;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary:hover {
@@ -374,6 +503,12 @@ img {
     align-items: center;
     gap: 4px;
     transition: opacity 0.2s;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .nav-tab:hover {
