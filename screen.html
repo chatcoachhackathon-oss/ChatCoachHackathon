@@ -95,12 +95,12 @@
                         <div class="ai-buttons">
                             <button id="refresh-btn" class="action-btn-circle" type="button" title="Start fresh (new session)">
                                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 4V1L8 5L12 9V6C15.31 6 18 8.69 18 12C18 13.01 17.75 13.97 17.3 14.8L18.76 16.26C19.54 15.03 20 13.57 20 12C20 7.58 16.42 4 12 4ZM12 18C8.69 18 6 15.31 6 12C6 10.99 6.25 10.03 6.7 9.2L5.24 7.74C4.46 8.97 4 10.43 4 12C4 16.42 7.58 20 12 20V23L16 19L12 15V18Z" fill="#999999"/>
+                                    <path d="M12 4V1L8 5L12 9V6C15.31 6 18 8.69 18 12C18 13.01 17.75 13.97 17.3 14.8L18.76 16.26C19.54 15.03 20 13.57 20 12C20 7.58 16.42 4 12 4ZM12 18C8.69 18 6 15.31 6 12C6 10.99 6.25 10.03 6.7 9.2L5.24 7.74C4.46 8.97 4 10.43 4 12C4 16.42 7.58 20 12 20V23L16 19L12 15V18Z" fill="white"/>
                                 </svg>
                             </button>
                             <button id="clear-btn" class="action-btn-circle" type="button" title="Clear answer">
                                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="#999999"/>
+                                    <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="white"/>
                                 </svg>
                             </button>
                             <button id="generate-btn" class="generate-btn-circle" type="button" title="Generate schedule">
@@ -501,6 +501,25 @@
              let hasWorkouts = false; // Track if we have workout schedule
              
              const bookAllBtn = document.getElementById('book-all-btn');
+             const refreshBtn = document.getElementById('refresh-btn');
+             const clearBtn = document.getElementById('clear-btn');
+             
+             // Function to disable all buttons
+             function disableAllButtons() {
+                 if (generateBtn) generateBtn.classList.add('disabled');
+                 if (refreshBtn) refreshBtn.classList.add('disabled');
+                 if (clearBtn) clearBtn.classList.add('disabled');
+                 console.log('🔒 All buttons disabled');
+             }
+             
+             // Function to enable buttons
+             function enableButtons() {
+                 if (refreshBtn) refreshBtn.classList.remove('disabled');
+                 if (clearBtn) clearBtn.classList.remove('disabled');
+                 // Generate button state is controlled by updateGenerateButtonState()
+                 updateGenerateButtonState();
+                 console.log('🔓 Buttons enabled');
+             }
              
              // Function to update generate button state
              function updateGenerateButtonState() {
@@ -625,6 +644,9 @@
                          console.log('User Input:', userInput);
                          console.log('Session ID:', sessionId);
                          
+                         // Disable all buttons during request
+                         disableAllButtons();
+                         
                          // Start generating animation
                          generateBtn.classList.add('generating');
                          
@@ -682,8 +704,6 @@
              // ============================================
              // REFRESH BUTTON - Start Fresh with New Session
              // ============================================
-             const refreshBtn = document.getElementById('refresh-btn');
-             
              if (refreshBtn) {
                  refreshBtn.addEventListener('click', function(e) {
                      e.preventDefault();
@@ -762,8 +782,6 @@
              // ============================================
              // CLEAR BUTTON - Clear Answer, Keep Session
              // ============================================
-             const clearBtn = document.getElementById('clear-btn');
-             
              if (clearBtn) {
                  clearBtn.addEventListener('click', function(e) {
                      e.preventDefault();
@@ -961,17 +979,21 @@
                          console.log('✅ Original carousel restored!');
                      }
                      
-                     // Stop generating animation
+                     // Stop generating animation and re-enable buttons
                      generateBtn.classList.remove('generating');
                      isGenerating = false;
+                     enableButtons();
                      
-                     // Change title back to static purple
+                     // Change title back to static purple (or "This week's plan" if has workouts)
                      setTimeout(() => {
                          sectionTitle.style.opacity = '0';
                          setTimeout(() => {
-                             sectionTitle.textContent = 'Generate schedule';
-                             sectionTitle.classList.remove('ai-generating');
-                             sectionTitle.classList.add('ai-active');
+                             // Keep "This week's plan" if we have workouts, otherwise "Generate schedule"
+                             if (!hasWorkouts) {
+                                 sectionTitle.textContent = 'Generate schedule';
+                                 sectionTitle.classList.remove('ai-generating');
+                                 sectionTitle.classList.add('ai-active');
+                             }
                              sectionTitle.style.opacity = '1';
                          }, 200);
                      }, 500);
@@ -981,14 +1003,21 @@
                      
                      // Show error in textarea
                      if (textarea) {
+                         textarea.disabled = false;
+                         textarea.readOnly = false;
                          textarea.value = 'Error: Failed to generate schedule. Please try again.';
                          textarea.style.color = '#FF0000';
-                         textarea.disabled = true;
+                         textarea.readOnly = true;
                      }
                      
-                     // Reset state
+                     // Reset state and re-enable buttons
                      generateBtn.classList.remove('generating');
                      isGenerating = false;
+                     hasResponse = true; // Mark as having response (error message)
+                     enableButtons();
+                     
+                     // Show original carousel
+                     generateCarouselCards(carouselData);
                      
                      setTimeout(() => {
                          sectionTitle.style.opacity = '0';

@@ -626,8 +626,8 @@ svg {
     position: relative;
     width: 36px;
     height: 36px;
-    background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #0055FF;
+    border: none;
     border-radius: 50%;
     cursor: pointer !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -639,16 +639,23 @@ svg {
     align-items: center;
     justify-content: center;
     pointer-events: auto !important;
+    box-shadow: 0 2px 6px rgba(0, 85, 255, 0.3);
 }
 
-.action-btn-circle:hover {
-    background: rgba(0, 0, 0, 0.08);
+.action-btn-circle:hover:not(.disabled) {
+    background: #0044CC;
     transform: scale(1.1);
-    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 10px rgba(0, 85, 255, 0.4);
 }
 
-.action-btn-circle:active {
+.action-btn-circle:active:not(.disabled) {
     transform: scale(0.95);
+}
+
+.action-btn-circle.disabled {
+    opacity: 0.3;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
 }
 
 .action-btn-circle svg {
@@ -659,6 +666,10 @@ svg {
 
 .action-btn-circle svg * {
     pointer-events: none !important;
+}
+
+.action-btn-circle svg path {
+    fill: white;
 }
 
 /* Generate Button Circle */
