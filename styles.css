@@ -652,6 +652,18 @@ svg {
     transform: scale(0.95);
 }
 
+/* Only refresh button gets disabled */
+#refresh-btn.disabled {
+    opacity: 0.3 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+#refresh-btn.disabled svg {
+    opacity: 1 !important;
+}
+
+/* Clear button (X) never gets disabled class, so these don't apply */
 .action-btn-circle.disabled {
     opacity: 0.3 !important;
     cursor: not-allowed !important;

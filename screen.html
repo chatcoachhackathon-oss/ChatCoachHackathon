@@ -505,6 +505,7 @@
              let hasResponse = false; // Track if textarea has API response
              let hasWorkouts = false; // Track if we have workout schedule
              let isCheckmarkMode = false; // Track if button shows checkmark
+             let abortController = null; // For canceling API requests
              
              const bookAllBtn = document.getElementById('book-all-btn');
              const refreshBtn = document.getElementById('refresh-btn');
@@ -512,18 +513,18 @@
              const arrowIcon = document.getElementById('arrow-icon');
              const checkIcon = document.getElementById('check-icon');
              
-             // Function to disable all buttons
+             // Function to disable all buttons (except X which is always enabled)
              function disableAllButtons() {
                  if (generateBtn) generateBtn.classList.add('disabled');
                  if (refreshBtn) refreshBtn.classList.add('disabled');
-                 if (clearBtn) clearBtn.classList.add('disabled');
-                 console.log('🔒 All buttons disabled');
+                 // Keep clearBtn always enabled
+                 console.log('🔒 Buttons disabled (except X)');
              }
              
              // Function to enable buttons
              function enableButtons() {
                  if (refreshBtn) refreshBtn.classList.remove('disabled');
-                 if (clearBtn) clearBtn.classList.remove('disabled');
+                 // clearBtn is always enabled, no need to change it
                  // Generate button state is controlled by updateGenerateButtonState()
                  updateGenerateButtonState();
                  console.log('🔓 Buttons enabled');
@@ -863,44 +864,72 @@
              if (clearBtn) {
                  clearBtn.addEventListener('click', function(e) {
                      e.preventDefault();
-                     console.log('✖️ Clear button clicked - Clearing answer (keeping session)');
+                     console.log('✖️ Clear button clicked - Collapsing AI section');
                      
-                     // Clear and re-enable textarea
-                     const textarea = document.getElementById('ai-textarea');
-                     if (textarea) {
-                         textarea.value = '';
-                         textarea.style.color = '#000000';
-                         textarea.disabled = false;
-                         textarea.readOnly = false;
-                         textarea.style.height = 'auto';
-                         
-                         // Focus cursor in textarea
-                         setTimeout(() => textarea.focus(), 100);
+                     // If request is ongoing, cancel it
+                     if (isGenerating && abortController) {
+                         console.log('🛑 Canceling ongoing request...');
+                         abortController.abort();
+                         abortController = null;
                      }
                      
-                     // Reset title to "Generate schedule" (keep session)
-                     sectionTitle.textContent = 'Generate schedule';
-                     sectionTitle.classList.add('ai-active');
-                     sectionTitle.classList.remove('ai-generating');
-                     sectionTitle.style.opacity = '1';
+                     // Collapse AI input box
+                     aiInputBox.style.opacity = '0';
+                     aiInputBox.style.transform = 'translateY(-10px)';
+                     
+                     setTimeout(() => {
+                         aiInputBox.classList.add('hidden');
+                         aiInputBox.style.opacity = '';
+                         aiInputBox.style.transform = '';
+                         
+                         // Clear textarea
+                         const textarea = document.getElementById('ai-textarea');
+                         if (textarea) {
+                             textarea.value = '';
+                             textarea.style.color = '#000000';
+                             textarea.disabled = false;
+                             textarea.readOnly = false;
+                             textarea.style.height = 'auto';
+                         }
+                     }, 300);
+                     
+                     // Reset title to "Recommended for you"
+                     setTimeout(() => {
+                         sectionTitle.style.opacity = '0';
+                         setTimeout(() => {
+                             sectionTitle.textContent = 'Recommended for you';
+                             sectionTitle.classList.remove('ai-active');
+                             sectionTitle.classList.remove('ai-generating');
+                             sectionTitle.style.opacity = '1';
+                         }, 200);
+                     }, 150);
                      
                      // Reset states
+                     isAIMode = false;
                      isGenerating = false;
-                     hasResponse = false; // Allow new input
+                     hasResponse = false;
+                     hasWorkouts = false;
                      
-                     // Switch checkmark back to arrow (user will type new content)
+                     // Hide "Book all" button
+                     if (bookAllBtn) {
+                         bookAllBtn.classList.add('hidden');
+                     }
+                     
+                     // Switch checkmark back to arrow
                      switchToArrow();
                      
                      if (generateBtn) {
                          generateBtn.classList.remove('generating');
                      }
                      
-                     // Update button state (will be disabled until user types)
-                     updateGenerateButtonState();
+                     // Re-enable other buttons
+                     enableButtons();
                      
-                     console.log('✅ Answer cleared, ready for new input');
+                     // Show original carousel
+                     generateCarouselCards(carouselData);
+                     
+                     console.log('✅ AI section collapsed, back to "Recommended for you"');
                      console.log('Current Session ID (unchanged):', window.sessionId);
-                     console.log('📌 hasResponse reset to false');
                  });
              }
              
@@ -911,6 +940,9 @@
                  console.log('📡 Making API call...');
                  
                  try {
+                     // Create AbortController for this request
+                     abortController = new AbortController();
+                     
                      const payload = {
                          action: 'sendMessage',
                          chatInput: chatInput || 'Generate a workout schedule',
@@ -924,7 +956,8 @@
                          headers: {
                              'Content-Type': 'application/json',
                          },
-                         body: JSON.stringify(payload)
+                         body: JSON.stringify(payload),
+                         signal: abortController.signal
                      });
                      
                      console.log('Response status:', response.status);
@@ -1083,9 +1116,16 @@
                      }, 500);
                      
                  } catch (error) {
+                     // Check if request was aborted
+                     if (error.name === 'AbortError') {
+                         console.log('🛑 Request canceled by user');
+                         return; // Don't show error for canceled requests
+                     }
+                     
                      console.error('❌ API Error:', error);
                      
                      // Show error in textarea
+                     const textarea = document.getElementById('ai-textarea');
                      if (textarea) {
                          textarea.disabled = false;
                          textarea.readOnly = false;
@@ -1112,6 +1152,8 @@
                              sectionTitle.style.opacity = '1';
                          }, 200);
                      }, 500);
+                 } finally {
+                     abortController = null;
                  }
              }
              
