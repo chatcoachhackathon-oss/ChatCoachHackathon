@@ -624,8 +624,8 @@ svg {
 /* Action Button (Refresh and Clear) */
 .action-btn-circle {
     position: relative;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     background: #0055FF;
     border: none;
     border-radius: 50%;
@@ -653,14 +653,18 @@ svg {
 }
 
 .action-btn-circle.disabled {
-    opacity: 0.3;
+    opacity: 0.3 !important;
     cursor: not-allowed !important;
     pointer-events: none !important;
 }
 
+.action-btn-circle.disabled svg {
+    opacity: 1 !important;
+}
+
 .action-btn-circle svg {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     pointer-events: none;
 }
 
@@ -677,8 +681,9 @@ svg {
     position: relative;
     width: 40px;
     height: 40px;
-    background: none;
+    background: #0055FF;
     border: none;
+    border-radius: 50%;
     cursor: pointer !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-user-select: none;
@@ -689,11 +694,13 @@ svg {
     align-items: center;
     justify-content: center;
     pointer-events: auto !important;
+    box-shadow: 0 2px 6px rgba(0, 85, 255, 0.3);
 }
 
 .generate-btn-circle:hover:not(.disabled):not(.generating) {
+    background: #0044CC;
     transform: scale(1.1);
-    filter: brightness(1.1);
+    box-shadow: 0 4px 10px rgba(0, 85, 255, 0.4);
 }
 
 .generate-btn-circle:active:not(.disabled):not(.generating) {
@@ -701,13 +708,17 @@ svg {
 }
 
 .generate-btn-circle svg {
-    width: 40px;
-    height: 40px;
+    width: 24px;
+    height: 24px;
     pointer-events: none;
 }
 
 .generate-btn-circle svg * {
     pointer-events: none !important;
+}
+
+.generate-btn-circle svg path {
+    fill: white;
 }
 
 .generate-btn-circle.generating {
@@ -717,13 +728,13 @@ svg {
 }
 
 .generate-btn-circle.disabled {
-    opacity: 0.3;
+    opacity: 0.3 !important;
     cursor: not-allowed !important;
     pointer-events: none !important;
 }
 
 .generate-btn-circle.disabled svg {
-    opacity: 0.5;
+    opacity: 1 !important;
 }
 
 @keyframes spinButton {
