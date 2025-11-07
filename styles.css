@@ -244,6 +244,67 @@ img {
     color: #5F53FF;
 }
 
+.section-header h2.ai-generating {
+    width: 256px !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 28px !important;
+    background: linear-gradient(90deg, 
+        #5F53FF 0%, 
+        #6B54E8 20%, 
+        #7F49CA 40%, 
+        #9470D8 60%, 
+        #A696E7 80%, 
+        #B8B0F0 100%
+    ) !important;
+    background-size: 200% 100% !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    animation: gradientFlow 4s ease-in-out infinite !important;
+    color: transparent !important;
+}
+
+.section-header h2.ai-generating::after {
+    content: '';
+    animation: loadingDots 1.4s infinite;
+    background: linear-gradient(90deg, 
+        #5F53FF 0%, 
+        #7F49CA 50%, 
+        #A696E7 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% center;
+    }
+    50% {
+        background-position: 100% center;
+    }
+    100% {
+        background-position: 0% center;
+    }
+}
+
+@keyframes loadingDots {
+    0%, 20% {
+        content: '';
+    }
+    40% {
+        content: '.';
+    }
+    60% {
+        content: '..';
+    }
+    80%, 100% {
+        content: '...';
+    }
+}
+
 .section-actions {
     display: flex;
     align-items: center;
@@ -385,19 +446,12 @@ svg {
 /* ============================================
    AI INPUT BOX
    ============================================ */
-.ai-input-container {
+.ai-input-wrapper {
     width: 100%;
-    padding: 10px;
-    background: white;
-    border-radius: 12px;
-    border: 1px solid #E3E4E4;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: relative;
     margin-bottom: var(--spacing-md);
     margin-top: var(--spacing-md);
-    animation: slideDown 0.3s ease-out;
-    transform-origin: top;
+    animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes slideDown {
@@ -411,15 +465,30 @@ svg {
     }
 }
 
-.ai-input {
-    flex: 1;
+.ai-textarea-container {
+    width: 100%;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #DDDFE5;
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.ai-textarea {
+    width: 100%;
     border: none;
     outline: none;
     font-size: var(--font-size-base);
     font-family: var(--font-family);
     color: var(--color-primary);
     background: transparent;
-    /* Re-enable text selection for input */
+    resize: none;
+    overflow: hidden;
+    min-height: 76px;
+    line-height: 24px;
+    /* Re-enable text selection for textarea */
     -webkit-user-select: text !important;
     -moz-user-select: text !important;
     -ms-user-select: text !important;
@@ -427,21 +496,72 @@ svg {
     pointer-events: auto;
 }
 
-.ai-input::selection {
+.ai-textarea::selection {
     background: rgba(66, 133, 244, 0.3);
 }
 
-.ai-input::-moz-selection {
+.ai-textarea::-moz-selection {
     background: rgba(66, 133, 244, 0.3);
 }
 
-.ai-input::placeholder {
+.ai-textarea::placeholder {
     color: rgba(0, 0, 0, 0.46);
 }
 
-.ai-input-icon {
-    flex-shrink: 0;
-    margin-left: 8px;
+/* Generate Button Circle */
+.generate-btn-circle {
+    position: absolute;
+    right: 8px;
+    bottom: 4px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto !important;
+    z-index: 100;
+}
+
+.generate-btn-circle:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+}
+
+.generate-btn-circle:active {
+    transform: scale(0.95);
+}
+
+.generate-btn-circle svg {
+    width: 40px;
+    height: 40px;
+    pointer-events: none;
+}
+
+.generate-btn-circle svg * {
+    pointer-events: none !important;
+}
+
+.generate-btn-circle.generating {
+    animation: spinButton 2s linear infinite;
+    opacity: 0.7;
+    cursor: wait !important;
+}
+
+@keyframes spinButton {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 

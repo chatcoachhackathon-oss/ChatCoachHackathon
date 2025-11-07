@@ -85,13 +85,15 @@
                     </div>
 
                     <!-- AI Input Box (Hidden by default) -->
-                    <div id="ai-input-box" class="ai-input-container hidden">
-                        <input type="text" class="ai-input" placeholder="Plan your week with AI">
-                        <div class="ai-input-icon">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M5.68973 3.00033L5.17566 4.45474C5.11695 4.62083 5.02182 4.77168 4.89726 4.89624C4.77269 5.0208 4.62184 5.11592 4.45574 5.17464L2.99959 5.68925C2.00014 6.04357 2.00014 7.45692 2.99959 7.81068L4.45574 8.32529C4.62184 8.38401 4.77269 8.47913 4.89726 8.60369C5.02182 8.72825 5.11695 8.8791 5.17566 9.04519L5.68973 10.5002C6.04294 11.4996 7.45691 11.5001 7.81069 10.5007L8.32645 9.04406C8.38524 8.87824 8.48035 8.72765 8.6048 8.6033C8.72926 8.47894 8.87993 8.38396 9.0458 8.32529L10.5008 7.81012C11.4997 7.45692 11.4997 6.04357 10.5008 5.68981L9.0458 5.17464C8.87987 5.11591 8.72917 5.02084 8.60471 4.89639C8.48024 4.77193 8.38517 4.62123 8.32645 4.45531L7.81069 2.99921C7.45635 1.9998 6.04238 2.00036 5.68973 3.00033ZM12.0432 10.2502L11.7004 11.2198C11.6613 11.3306 11.5979 11.4311 11.5148 11.5142C11.4318 11.5972 11.3312 11.6606 11.2205 11.6998L10.2497 12.0428C9.58342 12.279 9.58342 13.2213 10.2497 13.4571L11.2205 13.8002C11.3312 13.8393 11.4318 13.9028 11.5148 13.9858C11.5979 14.0688 11.6613 14.1694 11.7004 14.2801L12.0432 15.2501C12.2786 15.9164 13.2213 15.9168 13.4571 15.2505L13.801 14.2794C13.8402 14.1688 13.9036 14.0684 13.9865 13.9855C14.0695 13.9026 14.17 13.8393 14.2805 13.8002L15.2506 13.4567C15.9165 13.2213 15.9165 12.279 15.2506 12.0432L14.2805 11.6998C14.1699 11.6606 14.0694 11.5972 13.9865 11.5143C13.9035 11.4313 13.8401 11.3308 13.801 11.2202L13.4571 10.2495C13.2209 9.5832 12.2783 9.58357 12.0432 10.2502Z" fill="#C4C4C4"/>
-                            </svg>
+                    <div id="ai-input-box" class="ai-input-wrapper hidden">
+                        <div class="ai-textarea-container">
+                            <textarea id="ai-textarea" class="ai-textarea" rows="1" placeholder="Plan your week with AI"></textarea>
                         </div>
+                        <button id="generate-btn" class="generate-btn-circle" type="button" title="Generate schedule">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.75 18.5608V24.9037C18.75 25.2579 18.8699 25.5548 19.1096 25.7945C19.3493 26.034 19.6462 26.1537 20.0004 26.1537C20.3549 26.1537 20.6544 26.0325 20.8992 25.79C21.1436 25.5472 21.2658 25.2465 21.2658 24.8879V18.5608L23.4871 20.782C23.7179 21.0129 24.0081 21.1255 24.3575 21.12C24.7067 21.1147 24.9967 20.9966 25.2275 20.7658C25.4583 20.5352 25.5737 20.2444 25.5737 19.8933C25.5737 19.5422 25.5583 19.253 25.2275 19.0258L21.0704 14.8845C20.7693 14.5834 20.4178 14.4329 20.0158 14.4329C19.6142 14.4329 19.2628 14.5834 18.9617 14.8845L14.8046 19.0416C14.5737 19.2725 14.4583 19.5598 14.4583 19.9037C14.4583 20.2479 14.5737 20.5352 14.8046 20.7658C15.0354 20.9966 15.3264 21.112 15.6775 21.112C16.0286 21.112 16.3178 20.9966 16.545 20.7658L18.75 18.5608ZM20.0029 35.8333C17.8129 35.8333 15.7544 35.4177 13.8275 34.5866C11.9006 33.7555 10.2244 32.6276 8.79916 31.2029C7.37389 29.7782 6.24541 28.1027 5.41375 26.1766C4.58236 24.2505 4.16666 22.1926 4.16666 20.0029C4.16666 17.8129 4.58222 15.7544 5.41333 13.8275C6.24444 11.9005 7.37236 10.2244 8.79708 8.79913C10.2218 7.37385 11.8972 6.24538 13.8233 5.41371C15.7494 4.58232 17.8074 4.16663 19.9971 4.16663C22.1871 4.16663 24.2456 4.58218 26.1725 5.41329C28.0994 6.2444 29.7756 7.37232 31.2008 8.79704C32.6261 10.2218 33.7546 11.8972 34.5862 13.8233C35.4176 15.7494 35.8333 17.8073 35.8333 19.997C35.8333 22.187 35.4178 24.2455 34.5867 26.1725C33.7556 28.0994 32.6276 29.7755 31.2029 31.2008C29.7782 32.6261 28.1028 33.7545 26.1767 34.5862C24.2506 35.4176 22.1926 35.8333 20.0029 35.8333Z" fill="#0055FF"/>
+                            </svg>
+                        </button>
                     </div>
 
                     <!-- Carousel - Dynamically loaded from JSON -->
@@ -188,6 +190,8 @@
     </div>
 
     <script>
+        console.log('🎬 JavaScript started loading...');
+        
         // ============================================
         // UPDATE REAL TIME IN STATUS BAR
         // ============================================
@@ -279,12 +283,14 @@
         ];
 
         // ============================================
-        // CAROUSEL FUNCTIONALITY
-        // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            
-            // Generate Carousel Cards from JSON
-            function generateCarouselCards(data) {
+         // CAROUSEL FUNCTIONALITY
+         // ============================================
+         document.addEventListener('DOMContentLoaded', function() {
+             console.log('📱 DOM Content Loaded!');
+             console.log('Looking for elements...');
+             
+             // Generate Carousel Cards from JSON
+             function generateCarouselCards(data) {
                 const container = document.getElementById('carousel-container');
                 container.innerHTML = ''; // Clear existing content
                 
@@ -363,92 +369,172 @@
             }, { passive: true });
             
             // ============================================
-            // AI ICON FUNCTIONALITY
-            // ============================================
-            const aiIcon = document.getElementById('ai-icon');
-            const sectionTitle = document.getElementById('section-title');
-            const aiInputBox = document.getElementById('ai-input-box');
-            
-            let isAIMode = false;
-            
-            aiIcon.addEventListener('click', function(e) {
-                e.preventDefault();
-                isAIMode = !isAIMode;
-                
-                // Add visual feedback to icon click
-                aiIcon.style.transform = 'scale(0.9)';
-                setTimeout(() => {
-                    aiIcon.style.transform = '';
-                }, 150);
-                
-                if (isAIMode) {
-                    // Switch to AI mode with smooth transition
-                    sectionTitle.style.opacity = '0';
-                    sectionTitle.style.transform = 'translateY(-5px)';
-                    
-                    setTimeout(() => {
-                        sectionTitle.textContent = 'Generating schedule';
-                        sectionTitle.classList.add('ai-active');
-                        sectionTitle.style.opacity = '1';
-                        sectionTitle.style.transform = 'translateY(0)';
-                        
-                        // Show input box after title animation
-                        setTimeout(() => {
-                            aiInputBox.classList.remove('hidden');
-                            // Auto-focus the input with smooth transition
-                            const input = aiInputBox.querySelector('.ai-input');
-                            if (input) {
-                                setTimeout(() => input.focus(), 100);
-                            }
-                        }, 200);
-                    }, 250);
-                    
-                } else {
-                    // Hide input box with fade out
-                    aiInputBox.style.opacity = '0';
-                    aiInputBox.style.transform = 'translateY(-10px)';
-                    
-                    setTimeout(() => {
-                        aiInputBox.classList.add('hidden');
-                        aiInputBox.style.opacity = '';
-                        aiInputBox.style.transform = '';
-                    }, 300);
-                    
-                    setTimeout(() => {
-                        sectionTitle.style.opacity = '0';
-                        sectionTitle.style.transform = 'translateY(-5px)';
-                        
-                        setTimeout(() => {
-                            sectionTitle.textContent = 'Recommended for you';
-                            sectionTitle.classList.remove('ai-active');
-                            sectionTitle.style.opacity = '1';
-                            sectionTitle.style.transform = 'translateY(0)';
-                        }, 250);
-                    }, 150);
-                }
-            });
-            
-            // Handle Enter key in AI input
-            const aiInput = document.querySelector('.ai-input');
-            
-            // Allow selection in AI input
-            aiInput.addEventListener('mousedown', function(e) {
-                e.stopPropagation();
-            });
-            
-            aiInput.addEventListener('selectstart', function(e) {
-                e.stopPropagation();
-            });
-            
-            aiInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    console.log('AI Search:', aiInput.value);
-                    // Access session ID from parent window
-                    console.log('Session ID:', window.parent.sessionId || 'No session');
-                    // You can update carouselData here and call:
-                    // generateCarouselCards(newCarouselData);
-                }
-            });
+             // AI ICON FUNCTIONALITY
+             // ============================================
+             const aiIcon = document.getElementById('ai-icon');
+             const sectionTitle = document.getElementById('section-title');
+             const aiInputBox = document.getElementById('ai-input-box');
+             const generateBtn = document.getElementById('generate-btn');
+             
+             let isAIMode = false;
+             let isGenerating = false;
+             
+             aiIcon.addEventListener('click', function(e) {
+                 e.preventDefault();
+                 isAIMode = !isAIMode;
+                 
+                 // Add visual feedback to icon click
+                 aiIcon.style.transform = 'scale(0.9)';
+                 setTimeout(() => {
+                     aiIcon.style.transform = '';
+                 }, 150);
+                 
+                 if (isAIMode) {
+                     // Switch to AI mode with smooth transition
+                     sectionTitle.style.opacity = '0';
+                     sectionTitle.style.transform = 'translateY(-5px)';
+                     
+                     setTimeout(() => {
+                         sectionTitle.textContent = 'Generate schedule';
+                         sectionTitle.classList.add('ai-active');
+                         sectionTitle.classList.remove('ai-generating');
+                         sectionTitle.style.opacity = '1';
+                         sectionTitle.style.transform = 'translateY(0)';
+                         
+                         // Show input box after title animation
+                         setTimeout(() => {
+                             aiInputBox.classList.remove('hidden');
+                             // Auto-focus the textarea
+                             const textarea = document.getElementById('ai-textarea');
+                             if (textarea) {
+                                 setTimeout(() => textarea.focus(), 100);
+                             }
+                         }, 200);
+                     }, 250);
+                     
+                 } else {
+                     // Reset generating state
+                     isGenerating = false;
+                     
+                     // Hide input box with fade out
+                     aiInputBox.style.opacity = '0';
+                     aiInputBox.style.transform = 'translateY(-10px)';
+                     
+                     setTimeout(() => {
+                         aiInputBox.classList.add('hidden');
+                         aiInputBox.style.opacity = '';
+                         aiInputBox.style.transform = '';
+                         
+                         // Reset textarea
+                         const textarea = document.getElementById('ai-textarea');
+                         if (textarea) {
+                             textarea.value = '';
+                         }
+                     }, 300);
+                     
+                     setTimeout(() => {
+                         sectionTitle.style.opacity = '0';
+                         sectionTitle.style.transform = 'translateY(-5px)';
+                         
+                         setTimeout(() => {
+                             sectionTitle.textContent = 'Recommended for you';
+                             sectionTitle.classList.remove('ai-active');
+                             sectionTitle.classList.remove('ai-generating');
+                             sectionTitle.style.opacity = '1';
+                             sectionTitle.style.transform = 'translateY(0)';
+                         }, 250);
+                     }, 150);
+                 }
+             });
+             
+             // ============================================
+             // GENERATE BUTTON CLICK HANDLER
+             // ============================================
+             if (generateBtn) {
+                 console.log('✅ Generate button found, attaching listener');
+                 
+                 generateBtn.addEventListener('click', function(e) {
+                     e.preventDefault();
+                     e.stopPropagation();
+                     console.log('🚀 Generate button CLICKED!');
+                     console.log('isGenerating:', isGenerating);
+                     console.log('Button element:', generateBtn);
+                     
+                     if (!isGenerating) {
+                         isGenerating = true;
+                         console.log('Starting generation process...');
+                         
+                         const textarea = document.getElementById('ai-textarea');
+                         const userInput = textarea ? textarea.value.trim() : '';
+                         const sessionId = window.parent.sessionId || window.sessionId || 'unknown';
+                         
+                         console.log('User Input:', userInput);
+                         console.log('Session ID:', sessionId);
+                         console.log('Section Title Element:', sectionTitle);
+                         
+                         // Start generating animation
+                         generateBtn.classList.add('generating');
+                         console.log('Added generating class to button');
+                         
+                         // Change title to "Generating schedule..." with gradient
+                         sectionTitle.style.opacity = '0';
+                         console.log('Fading out title...');
+                         
+                         setTimeout(() => {
+                             sectionTitle.textContent = 'Generating schedule';
+                             sectionTitle.classList.remove('ai-active');
+                             sectionTitle.classList.add('ai-generating');
+                             sectionTitle.style.opacity = '1';
+                             console.log('Title classes:', sectionTitle.classList);
+                             console.log('Title text:', sectionTitle.textContent);
+                             
+                             // Show "Thinking..." in textarea
+                             if (textarea) {
+                                 const originalValue = textarea.value;
+                                 textarea.value = 'Thinking...';
+                                 textarea.style.color = '#CCCCCC';
+                                 textarea.disabled = true;
+                                 textarea.dataset.originalValue = originalValue;
+                                 console.log('Textarea updated to "Thinking..."');
+                             }
+                         }, 200);
+                     } else {
+                         console.log('Already generating, ignoring click');
+                     }
+                 });
+             } else {
+                 console.error('❌ Generate button NOT found!');
+             }
+             
+             // Handle Enter key in textarea
+             const aiTextarea = document.getElementById('ai-textarea');
+             
+             if (aiTextarea) {
+                 // Allow selection in textarea
+                 aiTextarea.addEventListener('mousedown', function(e) {
+                     e.stopPropagation();
+                 });
+                 
+                 aiTextarea.addEventListener('selectstart', function(e) {
+                     e.stopPropagation();
+                 });
+                 
+                 // Auto-resize textarea as user types
+                 aiTextarea.addEventListener('input', function() {
+                     this.style.height = 'auto';
+                     this.style.height = this.scrollHeight + 'px';
+                 });
+                 
+                 // Enter without shift triggers generate
+                 aiTextarea.addEventListener('keydown', function(e) {
+                     if (e.key === 'Enter' && !e.shiftKey && !isGenerating) {
+                         e.preventDefault();
+                         if (generateBtn) {
+                             generateBtn.click();
+                         }
+                     }
+                 });
+             }
             
             // Example function to update carousel dynamically
             window.updateCarousel = function(newData) {
