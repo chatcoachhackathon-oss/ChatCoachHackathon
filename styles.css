@@ -314,6 +314,40 @@ img {
     gap: var(--spacing-md);
 }
 
+/* Book All Button */
+.book-all-btn {
+    height: 32px;
+    padding: 6px 12px;
+    background: #0055FF;
+    color: white;
+    border: none;
+    border-radius: 48px;
+    font-size: 14px;
+    font-family: var(--font-family);
+    font-weight: 500;
+    line-height: 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(0, 85, 255, 0.3);
+}
+
+.book-all-btn:hover {
+    background: #0044CC;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 85, 255, 0.4);
+}
+
+.book-all-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.book-all-btn.hidden {
+    display: none;
+}
+
 .section-actions svg {
     cursor: pointer;
     transition: transform 0.2s;

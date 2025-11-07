@@ -64,6 +64,9 @@
                     <div class="section-header">
                         <h2 id="section-title">Recommended for you</h2>
                         <div class="section-actions">
+                            <!-- Book All Button (Hidden by default) -->
+                            <button id="book-all-btn" class="book-all-btn hidden">Book all</button>
+                            
                             <!-- AI Icon -->
                             <svg id="ai-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="cursor: pointer;">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.58631 4.00045L6.90089 5.93966C6.8226 6.1611 6.69577 6.36224 6.52968 6.52832C6.36359 6.6944 6.16245 6.82123 5.94099 6.89952L3.99945 7.58566C2.66685 8.05809 2.66685 9.94256 3.99945 10.4142L5.94099 11.1004C6.16245 11.1787 6.36359 11.3055 6.52968 11.4716C6.69577 11.6377 6.8226 11.8388 6.90089 12.0602L7.58631 14.0002C8.05726 15.3328 9.94255 15.3335 10.4143 14.001L11.1019 12.0587C11.1803 11.8377 11.3071 11.6369 11.4731 11.4711C11.639 11.3053 11.8399 11.1786 12.0611 11.1004L14.0011 10.4135C15.333 9.94256 15.333 8.05809 14.0011 7.58641L12.0611 6.89952C11.8398 6.82121 11.6389 6.69446 11.4729 6.52851C11.307 6.36257 11.1802 6.16164 11.1019 5.94041L10.4143 3.99895C9.9418 2.66639 8.05651 2.66714 7.58631 4.00045ZM16.0575 13.667L15.6006 14.9598C15.5484 15.1074 15.4638 15.2415 15.3531 15.3522C15.2424 15.4629 15.1083 15.5475 14.9607 15.5997L13.6663 16.0571C12.7779 16.3721 12.7779 17.6284 13.6663 17.9428L14.9607 18.4003C15.1083 18.4524 15.2424 18.537 15.3531 18.6477C15.4638 18.7584 15.5484 18.8925 15.6006 19.0402L16.0575 20.3335C16.3715 21.2218 17.6284 21.2223 17.9428 20.334L18.4013 19.0392C18.4536 18.8918 18.5381 18.7579 18.6487 18.6474C18.7593 18.5368 18.8933 18.4524 19.0407 18.4003L20.3341 17.9423C21.222 17.6284 21.222 16.3721 20.3341 16.0576L19.0407 15.5997C18.8932 15.5475 18.7593 15.463 18.6486 15.3523C18.538 15.2417 18.4535 15.1078 18.4013 14.9603L17.9428 13.666C17.6279 12.7776 16.371 12.7781 16.0575 13.667Z" fill="url(#paint0_linear)"/>
@@ -201,8 +204,75 @@
 
     </div>
 
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 99998;"></canvas>
+
     <script>
         console.log('🎬 JavaScript started loading...');
+        
+        // ============================================
+        // CONFETTI ANIMATION
+        // ============================================
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const confetti = [];
+            const confettiCount = 150;
+            const colors = ['#0055FF', '#22A1E9', '#9F70E7', '#8362E4', '#FFD700', '#FF6B9D'];
+            
+            // Create confetti pieces
+            for (let i = 0; i < confettiCount; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: -20,
+                    size: Math.random() * 8 + 4,
+                    speedY: Math.random() * 3 + 2,
+                    speedX: Math.random() * 4 - 2,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rotationSpeed: Math.random() * 10 - 5
+                });
+            }
+            
+            console.log('🎉 Confetti triggered!');
+            
+            function animateConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                confetti.forEach((piece, index) => {
+                    ctx.save();
+                    ctx.translate(piece.x, piece.y);
+                    ctx.rotate((piece.rotation * Math.PI) / 180);
+                    ctx.fillStyle = piece.color;
+                    ctx.fillRect(-piece.size / 2, -piece.size / 2, piece.size, piece.size);
+                    ctx.restore();
+                    
+                    // Update position
+                    piece.y += piece.speedY;
+                    piece.x += piece.speedX;
+                    piece.rotation += piece.rotationSpeed;
+                    
+                    // Remove if off screen
+                    if (piece.y > canvas.height) {
+                        confetti.splice(index, 1);
+                    }
+                });
+                
+                if (confetti.length > 0) {
+                    requestAnimationFrame(animateConfetti);
+                } else {
+                    // Clear canvas when done
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            
+            animateConfetti();
+        }
         
         // ============================================
         // INITIALIZE SESSION ID
@@ -428,6 +498,9 @@
              let isAIMode = false;
              let isGenerating = false;
              let hasResponse = false; // Track if textarea has API response
+             let hasWorkouts = false; // Track if we have workout schedule
+             
+             const bookAllBtn = document.getElementById('book-all-btn');
              
              // Function to update generate button state
              function updateGenerateButtonState() {
@@ -485,6 +558,13 @@
                  } else {
                      // Reset generating state
                      isGenerating = false;
+                     hasResponse = false;
+                     hasWorkouts = false;
+                     
+                     // Hide "Book all" button
+                     if (bookAllBtn) {
+                         bookAllBtn.classList.add('hidden');
+                     }
                      
                      // Hide input box with fade out
                      aiInputBox.style.opacity = '0';
@@ -581,6 +661,25 @@
              }
              
              // ============================================
+             // BOOK ALL BUTTON - Trigger Confetti
+             // ============================================
+             if (bookAllBtn) {
+                 bookAllBtn.addEventListener('click', function(e) {
+                     e.preventDefault();
+                     console.log('🎉 Book all clicked! Triggering confetti...');
+                     
+                     // Trigger confetti animation
+                     triggerConfetti();
+                     
+                     // Optional: Add visual feedback to button
+                     bookAllBtn.style.transform = 'scale(0.95)';
+                     setTimeout(() => {
+                         bookAllBtn.style.transform = '';
+                     }, 150);
+                 });
+             }
+             
+             // ============================================
              // REFRESH BUTTON - Start Fresh with New Session
              // ============================================
              const refreshBtn = document.getElementById('refresh-btn');
@@ -640,6 +739,13 @@
                      // Reset states
                      isGenerating = false;
                      hasResponse = false;
+                     hasWorkouts = false;
+                     
+                     // Hide "Book all" button
+                     if (bookAllBtn) {
+                         bookAllBtn.classList.add('hidden');
+                         console.log('📘 "Book all" button hidden');
+                     }
                      
                      if (generateBtn) {
                          generateBtn.classList.remove('generating');
@@ -649,7 +755,7 @@
                      updateGenerateButtonState();
                      
                      console.log('✅ Fresh start complete with new session!');
-                     console.log('📌 hasResponse reset to false');
+                     console.log('📌 All states reset');
                  });
              }
              
@@ -836,9 +942,22 @@
                          
                          generateCarouselCards(newCarouselData);
                          console.log('✅ Carousel updated with new workouts!');
+                         
+                         // Show "Book all" button and change title
+                         hasWorkouts = true;
+                         if (bookAllBtn) {
+                             bookAllBtn.classList.remove('hidden');
+                             console.log('📘 "Book all" button shown');
+                         }
+                         sectionTitle.textContent = "This week's plan";
+                         
                      } else {
                          console.log('⚠️ Empty workout_schedule, showing original carousel');
                          generateCarouselCards(carouselData);
+                         hasWorkouts = false;
+                         if (bookAllBtn) {
+                             bookAllBtn.classList.add('hidden');
+                         }
                          console.log('✅ Original carousel restored!');
                      }
                      
