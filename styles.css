@@ -646,12 +646,12 @@ svg {
     pointer-events: auto !important;
 }
 
-.generate-btn-circle:hover {
+.generate-btn-circle:hover:not(.disabled):not(.generating) {
     transform: scale(1.1);
     filter: brightness(1.1);
 }
 
-.generate-btn-circle:active {
+.generate-btn-circle:active:not(.disabled):not(.generating) {
     transform: scale(0.95);
 }
 
@@ -669,6 +669,16 @@ svg {
     animation: spinButton 2s linear infinite;
     opacity: 0.7;
     cursor: wait !important;
+}
+
+.generate-btn-circle.disabled {
+    opacity: 0.3;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+.generate-btn-circle.disabled svg {
+    opacity: 0.5;
 }
 
 @keyframes spinButton {

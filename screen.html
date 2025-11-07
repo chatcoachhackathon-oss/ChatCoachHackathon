@@ -427,6 +427,25 @@
              
              let isAIMode = false;
              let isGenerating = false;
+             let hasResponse = false; // Track if textarea has API response
+             
+             // Function to update generate button state
+             function updateGenerateButtonState() {
+                 const textarea = document.getElementById('ai-textarea');
+                 
+                 if (!generateBtn || !textarea) return;
+                 
+                 const isEmpty = !textarea.value.trim();
+                 const shouldDisable = isEmpty || hasResponse || isGenerating;
+                 
+                 if (shouldDisable) {
+                     generateBtn.classList.add('disabled');
+                     console.log('🚫 Generate button disabled:', { isEmpty, hasResponse, isGenerating });
+                 } else {
+                     generateBtn.classList.remove('disabled');
+                     console.log('✅ Generate button enabled');
+                 }
+             }
              
              aiIcon.addEventListener('click', function(e) {
                  e.preventDefault();
@@ -458,6 +477,8 @@
                              if (textarea) {
                                  setTimeout(() => textarea.focus(), 100);
                              }
+                             // Initial button state (disabled when empty)
+                             updateGenerateButtonState();
                          }, 200);
                      }, 250);
                      
@@ -507,7 +528,13 @@
                      e.stopPropagation();
                      console.log('🚀 Generate button CLICKED!');
                      
-                     if (!isGenerating) {
+                     // Check if button is disabled
+                     if (generateBtn.classList.contains('disabled')) {
+                         console.log('🚫 Button is disabled, ignoring click');
+                         return;
+                     }
+                     
+                     if (!isGenerating && !hasResponse) {
                          isGenerating = true;
                          console.log('Starting generation process...');
                          
@@ -612,11 +639,17 @@
                      
                      // Reset states
                      isGenerating = false;
+                     hasResponse = false;
+                     
                      if (generateBtn) {
                          generateBtn.classList.remove('generating');
                      }
                      
+                     // Update button state
+                     updateGenerateButtonState();
+                     
                      console.log('✅ Fresh start complete with new session!');
+                     console.log('📌 hasResponse reset to false');
                  });
              }
              
@@ -649,14 +682,20 @@
                      sectionTitle.classList.remove('ai-generating');
                      sectionTitle.style.opacity = '1';
                      
-                     // Reset generating state
+                     // Reset states
                      isGenerating = false;
+                     hasResponse = false; // Allow new input
+                     
                      if (generateBtn) {
                          generateBtn.classList.remove('generating');
                      }
                      
+                     // Update button state (will be disabled until user types)
+                     updateGenerateButtonState();
+                     
                      console.log('✅ Answer cleared, ready for new input');
                      console.log('Current Session ID (unchanged):', window.sessionId);
+                     console.log('📌 hasResponse reset to false');
                  });
              }
              
@@ -763,6 +802,13 @@
                              
                              console.log('✅ FINAL textarea value:', textarea.value);
                              console.log('✅ FINAL textarea visible text should be:', data.answer);
+                             
+                             // Mark that we have a response
+                             hasResponse = true;
+                             console.log('📌 hasResponse set to true');
+                             
+                             // Disable generate button since we have a response
+                             updateGenerateButtonState();
                          } else {
                              console.error('❌ STILL cannot find textarea!');
                          }
@@ -850,17 +896,20 @@
                      e.stopPropagation();
                  });
                  
-                 // Auto-resize textarea as user types
+                 // Auto-resize textarea and update button state as user types
                  aiTextarea.addEventListener('input', function() {
                      this.style.height = 'auto';
                      this.style.height = this.scrollHeight + 'px';
+                     
+                     // Update button state on every keystroke
+                     updateGenerateButtonState();
                  });
                  
-                 // Enter without shift triggers generate
+                 // Enter without shift triggers generate (only if enabled)
                  aiTextarea.addEventListener('keydown', function(e) {
-                     if (e.key === 'Enter' && !e.shiftKey && !isGenerating) {
+                     if (e.key === 'Enter' && !e.shiftKey && !isGenerating && !hasResponse) {
                          e.preventDefault();
-                         if (generateBtn) {
+                         if (generateBtn && !generateBtn.classList.contains('disabled')) {
                              generateBtn.click();
                          }
                      }
