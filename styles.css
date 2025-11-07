@@ -576,6 +576,54 @@ svg {
     color: rgba(0, 0, 0, 0.46);
 }
 
+/* AI Buttons Container */
+.ai-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    align-self: flex-end;
+}
+
+/* Action Button (Refresh and Clear) */
+.action-btn-circle {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto !important;
+}
+
+.action-btn-circle:hover {
+    background: rgba(0, 0, 0, 0.08);
+    transform: scale(1.1);
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+.action-btn-circle:active {
+    transform: scale(0.95);
+}
+
+.action-btn-circle svg {
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.action-btn-circle svg * {
+    pointer-events: none !important;
+}
+
 /* Generate Button Circle */
 .generate-btn-circle {
     position: relative;
@@ -593,8 +641,6 @@ svg {
     align-items: center;
     justify-content: center;
     pointer-events: auto !important;
-    align-self: flex-end;
-    margin-right: 0;
 }
 
 .generate-btn-circle:hover {
