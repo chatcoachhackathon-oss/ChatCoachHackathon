@@ -89,8 +89,13 @@
 
                     <!-- AI Input Box (Hidden by default) -->
                     <div id="ai-input-box" class="ai-input-wrapper hidden">
-                        <div class="ai-textarea-container">
-                            <textarea id="ai-textarea" class="ai-textarea" rows="1" placeholder="Plan your week with AI"></textarea>
+                        <div class="ai-textarea-container" id="chat-container">
+                            <!-- Chat messages scroll independently -->
+                            <div id="chat-messages"></div>
+                            <!-- Textarea stays at bottom -->
+                            <div class="ai-textarea-wrapper-inner">
+                                <textarea id="ai-textarea" class="ai-textarea" rows="1" placeholder="Plan your week with AI"></textarea>
+                            </div>
                         </div>
                         <div class="ai-buttons">
                             <button id="refresh-btn" class="action-btn-circle hidden" type="button" title="Get alternate recommendations">
@@ -507,12 +512,66 @@
              let hasWorkouts = false; // Track if we have workout schedule
              let isCheckmarkMode = false; // Track if button shows checkmark
              let abortController = null; // For canceling API requests
+             let chatHistory = []; // Store conversation history
+             let currentUserInput = ''; // Track current user typing
              
              const bookAllBtn = document.getElementById('book-all-btn');
              const refreshBtn = document.getElementById('refresh-btn');
              const clearBtn = document.getElementById('clear-btn');
              const arrowIcon = document.getElementById('arrow-icon');
              const checkIcon = document.getElementById('check-icon');
+             const chatMessagesContainer = document.getElementById('chat-messages');
+             
+             // ============================================
+             // CHAT HISTORY FUNCTIONS
+             // ============================================
+             
+             // Add message to chat history and render
+             function addChatMessage(text, isBot = false, isThinking = false) {
+                 const message = {
+                     text: text,
+                     isBot: isBot,
+                     isThinking: isThinking,
+                     id: Date.now()
+                 };
+                 
+                 chatHistory.push(message);
+                 renderChatHistory();
+                 
+                 // Auto-scroll to bottom of container
+                 setTimeout(() => {
+                     const container = document.getElementById('chat-container');
+                     if (container) {
+                         container.scrollTop = container.scrollHeight;
+                     }
+                 }, 100);
+                 
+                 return message.id;
+             }
+             
+             // Update a specific message (for replacing "Thinking...")
+             function updateChatMessage(messageId, newText) {
+                 const message = chatHistory.find(m => m.id === messageId);
+                 if (message) {
+                     message.text = newText;
+                     message.isThinking = false;
+                     renderChatHistory();
+                 }
+             }
+             
+             // Render all chat messages
+             function renderChatHistory() {
+                 if (!chatMessagesContainer) return;
+                 
+                 chatMessagesContainer.innerHTML = '';
+                 
+                 chatHistory.forEach(message => {
+                     const msgDiv = document.createElement('div');
+                     msgDiv.className = message.isBot ? 'bot-message' : 'user-message';
+                     msgDiv.textContent = message.text;
+                     chatMessagesContainer.appendChild(msgDiv);
+                 });
+             }
              
              // Function to disable all buttons (except X which is always enabled)
              function disableAllButtons() {
@@ -572,11 +631,12 @@
                  }
                  
                  const isEmpty = !textarea.value.trim();
-                 const shouldDisable = isEmpty || hasResponse || isGenerating;
+                 // Don't check hasResponse for disabling - we want to allow continuous chat
+                 const shouldDisable = isEmpty || isGenerating;
                  
                  if (shouldDisable) {
                      generateBtn.classList.add('disabled');
-                     console.log('🚫 Generate button disabled:', { isEmpty, hasResponse, isGenerating });
+                     console.log('🚫 Generate button disabled:', { isEmpty, isGenerating });
                  } else {
                      generateBtn.classList.remove('disabled');
                      console.log('✅ Generate button enabled');
@@ -726,10 +786,29 @@
                          
                          const textarea = document.getElementById('ai-textarea');
                          const userInput = textarea ? textarea.value.trim() : '';
+                         
+                         if (!userInput) {
+                             console.log('⚠️ No user input');
+                             isGenerating = false;
+                             return;
+                         }
+                         
                          const sessionId = window.parent.sessionId || window.sessionId || 'SID-default';
                          
                          console.log('User Input:', userInput);
                          console.log('Session ID:', sessionId);
+                         
+                         // Add user message to chat history
+                         addChatMessage(userInput, false);
+                         
+                         // Clear textarea and disable it during request
+                         textarea.value = '';
+                         textarea.style.height = 'auto';
+                         textarea.disabled = true;
+                         textarea.placeholder = '';
+                         
+                         // Add "Thinking..." message (will be replaced with answer)
+                         const thinkingId = addChatMessage('Thinking...', true, true);
                          
                          // Disable all buttons during request
                          disableAllButtons();
@@ -747,20 +826,11 @@
                              sectionTitle.style.opacity = '1';
                              console.log('✨ Title updated to generating state');
                              
-                             // Show "Thinking..." in textarea
-                             if (textarea) {
-                                 const originalValue = textarea.value;
-                                 textarea.value = 'Thinking...';
-                                 textarea.style.color = '#CCCCCC';
-                                 textarea.disabled = true;
-                                 textarea.dataset.originalValue = originalValue;
-                             }
-                             
                              // Show skeleton cards while loading
                              generateSkeletonCards(3);
                              
-                             // Make API call
-                             makeAPICall(userInput, sessionId, textarea);
+                             // Make API call with thinking message ID
+                             makeAPICall(userInput, sessionId, thinkingId);
                              
                          }, 200);
                      }
@@ -807,14 +877,14 @@
                      
                      const sessionId = window.parent.sessionId || window.sessionId || 'SID-default';
                      
-                     // Update textarea to show we're getting alternates
+                     // Add "Getting alternate recommendations..." to chat
+                     const thinkingId = addChatMessage('Getting alternate recommendations...', true, true);
+                     
+                     // Clear textarea
                      const textarea = document.getElementById('ai-textarea');
                      if (textarea) {
-                         const originalValue = textarea.value;
-                         textarea.value = 'Getting alternate recommendations...';
-                         textarea.style.color = '#CCCCCC';
-                         textarea.disabled = true;
-                         textarea.dataset.originalValue = originalValue;
+                         textarea.value = '';
+                         textarea.style.height = 'auto';
                      }
                      
                      // Change title to generating state
@@ -829,7 +899,7 @@
                      generateSkeletonCards(3);
                      
                      // Make API call with "Give me alternate recommendations"
-                     makeAPICall('Give me alternate recommendations', sessionId, textarea);
+                     makeAPICall('Give me alternate recommendations', sessionId, thinkingId);
                      
                      console.log('📡 Requesting alternate recommendations with same session');
                  });
@@ -859,7 +929,7 @@
                          aiInputBox.style.opacity = '';
                          aiInputBox.style.transform = '';
                          
-                         // Clear textarea
+                         // Clear textarea and chat history
                          const textarea = document.getElementById('ai-textarea');
                          if (textarea) {
                              textarea.value = '';
@@ -868,6 +938,10 @@
                              textarea.readOnly = false;
                              textarea.style.height = 'auto';
                          }
+                         
+                         // Clear chat history
+                         chatHistory = [];
+                         renderChatHistory();
                      }, 300);
                      
                      // Reset title to "Recommended for you"
@@ -917,7 +991,7 @@
              // ============================================
              // API CALL FUNCTION
              // ============================================
-             async function makeAPICall(chatInput, sessionId, textareaElement) {
+             async function makeAPICall(chatInput, sessionId, thinkingMessageId) {
                  console.log('📡 Making API call...');
                  
                  try {
@@ -979,60 +1053,19 @@
                      console.log('Answer from API:', data.answer);
                      console.log('Workout schedule:', data.workout_schedule);
                      
-                     // Get fresh reference to textarea
-                     const textarea = document.getElementById('ai-textarea');
-                     console.log('Textarea element for update:', textarea);
-                     console.log('Textarea current value:', textarea ? textarea.value : 'null');
-                     
-                     // Display answer in textarea (non-editable)
+                     // Replace "Thinking..." with actual answer in chat history
                      if (data.answer) {
-                         console.log('📝 We have an answer! Length:', data.answer.length);
-                         console.log('Answer content:', data.answer);
-                         console.log('Textarea before update:', textarea);
-                         
-                         if (!textarea) {
-                             console.error('❌ Textarea is null! Trying to find it again...');
-                             textarea = document.getElementById('ai-textarea');
-                             console.log('Found textarea:', textarea);
-                         }
-                         
-                         if (textarea) {
-                             // FORCE CLEAR AND UPDATE
-                             console.log('🔄 Step 1: Clear textarea');
-                             textarea.disabled = false;
-                             textarea.readOnly = false;
-                             textarea.value = '';  // Clear first
-                             console.log('Cleared. Value is now:', textarea.value);
-                             
-                             console.log('🔄 Step 2: Set answer');
-                             textarea.value = data.answer;
-                             console.log('Set. Value is now:', textarea.value);
-                             
-                             console.log('🔄 Step 3: Style it');
-                             textarea.style.color = '#000000';
-                             textarea.style.fontWeight = '400';
-                             
-                             console.log('🔄 Step 4: Resize');
-                             textarea.style.height = 'auto';
-                             textarea.style.height = textarea.scrollHeight + 'px';
-                             
-                             console.log('🔄 Step 5: Make read-only');
-                             textarea.readOnly = true;
-                             
-                             console.log('✅ FINAL textarea value:', textarea.value);
-                             console.log('✅ FINAL textarea visible text should be:', data.answer);
-                             
-                             // Mark that we have a response
-                             hasResponse = true;
-                             console.log('📌 hasResponse set to true');
-                             
-                             // Disable generate button since we have a response
-                             updateGenerateButtonState();
-                         } else {
-                             console.error('❌ STILL cannot find textarea!');
-                         }
+                         console.log('📝 Updating "Thinking..." with answer');
+                         updateChatMessage(thinkingMessageId, data.answer);
+                         console.log('✅ Answer added to chat history');
                      } else {
                          console.error('❌ No answer in response!', data);
+                         // Remove thinking message if no answer
+                         const thinkingIndex = chatHistory.findIndex(m => m.id === thinkingMessageId);
+                         if (thinkingIndex !== -1) {
+                             chatHistory.splice(thinkingIndex, 1);
+                             renderChatHistory();
+                         }
                      }
                      
                      // Update carousel with workout schedule
@@ -1095,7 +1128,25 @@
                      // Stop generating animation and re-enable buttons
                      generateBtn.classList.remove('generating');
                      isGenerating = false;
+                     hasResponse = false; // Allow user to type more
                      enableButtons();
+                     
+                     // Re-enable textarea for new input
+                     const textarea = document.getElementById('ai-textarea');
+                     console.log('📝 Re-enabling textarea:', textarea);
+                     console.log('📝 Textarea disabled before:', textarea ? textarea.disabled : 'null');
+                     
+                     if (textarea) {
+                         textarea.disabled = false;
+                         textarea.readOnly = false;
+                         textarea.placeholder = 'Plan your week with AI';
+                         textarea.style.color = '#000000';
+                         console.log('📝 Textarea disabled after:', textarea.disabled);
+                         console.log('✅ Textarea re-enabled and ready');
+                         setTimeout(() => textarea.focus(), 200);
+                     } else {
+                         console.error('❌ Could not find textarea to re-enable!');
+                     }
                      
                      // Change title back (or keep "This week's plan" if has workouts)
                      setTimeout(() => {
@@ -1124,21 +1175,22 @@
                      
                      console.error('❌ API Error:', error);
                      
-                     // Show error in textarea
-                     const textarea = document.getElementById('ai-textarea');
-                     if (textarea) {
-                         textarea.disabled = false;
-                         textarea.readOnly = false;
-                         textarea.value = 'Error: Failed to generate schedule. Please try again.';
-                         textarea.style.color = '#FF0000';
-                         textarea.readOnly = true;
-                     }
+                     // Update thinking message with error
+                     updateChatMessage(thinkingMessageId, 'Error: Failed to generate schedule. Please try again.');
                      
                      // Reset state and re-enable buttons
                      generateBtn.classList.remove('generating');
                      isGenerating = false;
-                     hasResponse = true; // Mark as having response (error message)
+                     hasResponse = false; // Allow user to try again
                      enableButtons();
+                     
+                     // Re-enable textarea
+                     const textarea = document.getElementById('ai-textarea');
+                     if (textarea) {
+                         textarea.disabled = false;
+                         textarea.placeholder = 'Plan your week with AI';
+                         setTimeout(() => textarea.focus(), 100);
+                     }
                      
                      // Show original carousel
                      generateCarouselCards(carouselData);
