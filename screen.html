@@ -453,12 +453,10 @@
              if (generateBtn) {
                  console.log('✅ Generate button found, attaching listener');
                  
-                 generateBtn.addEventListener('click', function(e) {
+                 generateBtn.addEventListener('click', async function(e) {
                      e.preventDefault();
                      e.stopPropagation();
                      console.log('🚀 Generate button CLICKED!');
-                     console.log('isGenerating:', isGenerating);
-                     console.log('Button element:', generateBtn);
                      
                      if (!isGenerating) {
                          isGenerating = true;
@@ -466,27 +464,23 @@
                          
                          const textarea = document.getElementById('ai-textarea');
                          const userInput = textarea ? textarea.value.trim() : '';
-                         const sessionId = window.parent.sessionId || window.sessionId || 'unknown';
+                         const sessionId = window.parent.sessionId || window.sessionId || 'SID-default';
                          
                          console.log('User Input:', userInput);
                          console.log('Session ID:', sessionId);
-                         console.log('Section Title Element:', sectionTitle);
                          
                          // Start generating animation
                          generateBtn.classList.add('generating');
-                         console.log('Added generating class to button');
                          
                          // Change title to "Generating schedule..." with gradient
                          sectionTitle.style.opacity = '0';
-                         console.log('Fading out title...');
                          
                          setTimeout(() => {
                              sectionTitle.textContent = 'Generating schedule';
                              sectionTitle.classList.remove('ai-active');
                              sectionTitle.classList.add('ai-generating');
                              sectionTitle.style.opacity = '1';
-                             console.log('Title classes:', sectionTitle.classList);
-                             console.log('Title text:', sectionTitle.textContent);
+                             console.log('✨ Title updated to generating state');
                              
                              // Show "Thinking..." in textarea
                              if (textarea) {
@@ -495,15 +489,173 @@
                                  textarea.style.color = '#CCCCCC';
                                  textarea.disabled = true;
                                  textarea.dataset.originalValue = originalValue;
-                                 console.log('Textarea updated to "Thinking..."');
                              }
+                             
+                             // Make API call
+                             makeAPICall(userInput, sessionId, textarea);
+                             
                          }, 200);
-                     } else {
-                         console.log('Already generating, ignoring click');
                      }
                  });
              } else {
                  console.error('❌ Generate button NOT found!');
+             }
+             
+             // ============================================
+             // API CALL FUNCTION
+             // ============================================
+             async function makeAPICall(chatInput, sessionId, textareaElement) {
+                 console.log('📡 Making API call...');
+                 
+                 try {
+                     const payload = {
+                         action: 'sendMessage',
+                         chatInput: chatInput || 'Generate a workout schedule',
+                         sessionId: sessionId
+                     };
+                     
+                     console.log('Request payload:', JSON.stringify(payload, null, 2));
+                     
+                     const response = await fetch('https://chatcoachhackathon.app.n8n.cloud/webhook/a889d2ae-2159-402f-b326-5f61e90f602e/chat', {
+                         method: 'POST',
+                         headers: {
+                             'Content-Type': 'application/json',
+                         },
+                         body: JSON.stringify(payload)
+                     });
+                     
+                     console.log('Response status:', response.status);
+                     
+                     if (!response.ok) {
+                         throw new Error(`HTTP error! status: ${response.status}`);
+                     }
+                     
+                     const rawData = await response.json();
+                     console.log('✅ Raw API Response:', rawData);
+                     
+                     // Parse the output field which contains the actual JSON
+                     let data;
+                     if (rawData.output) {
+                         console.log('📦 Parsing output field...');
+                         data = JSON.parse(rawData.output);
+                         console.log('✅ Parsed data:', data);
+                     } else {
+                         data = rawData;
+                     }
+                     
+                     console.log('Answer from API:', data.answer);
+                     console.log('Workout schedule:', data.workout_schedule);
+                     
+                     // Get fresh reference to textarea
+                     const textarea = document.getElementById('ai-textarea');
+                     console.log('Textarea element for update:', textarea);
+                     console.log('Textarea current value:', textarea ? textarea.value : 'null');
+                     
+                     // Display answer in textarea (non-editable)
+                     if (data.answer) {
+                         console.log('📝 We have an answer! Length:', data.answer.length);
+                         console.log('Answer content:', data.answer);
+                         console.log('Textarea before update:', textarea);
+                         
+                         if (!textarea) {
+                             console.error('❌ Textarea is null! Trying to find it again...');
+                             textarea = document.getElementById('ai-textarea');
+                             console.log('Found textarea:', textarea);
+                         }
+                         
+                         if (textarea) {
+                             // FORCE CLEAR AND UPDATE
+                             console.log('🔄 Step 1: Clear textarea');
+                             textarea.disabled = false;
+                             textarea.readOnly = false;
+                             textarea.value = '';  // Clear first
+                             console.log('Cleared. Value is now:', textarea.value);
+                             
+                             console.log('🔄 Step 2: Set answer');
+                             textarea.value = data.answer;
+                             console.log('Set. Value is now:', textarea.value);
+                             
+                             console.log('🔄 Step 3: Style it');
+                             textarea.style.color = '#000000';
+                             textarea.style.fontWeight = '400';
+                             
+                             console.log('🔄 Step 4: Resize');
+                             textarea.style.height = 'auto';
+                             textarea.style.height = textarea.scrollHeight + 'px';
+                             
+                             console.log('🔄 Step 5: Make read-only');
+                             textarea.readOnly = true;
+                             
+                             console.log('✅ FINAL textarea value:', textarea.value);
+                             console.log('✅ FINAL textarea visible text should be:', data.answer);
+                         } else {
+                             console.error('❌ STILL cannot find textarea!');
+                         }
+                     } else {
+                         console.error('❌ No answer in response!', data);
+                     }
+                     
+                     // Update carousel with workout schedule
+                     if (data.workout_schedule && data.workout_schedule.length > 0) {
+                         console.log('🏋️ Updating carousel with', data.workout_schedule.length, 'workouts');
+                         
+                         const newCarouselData = data.workout_schedule.map(item => ({
+                             activity_title: item.classTitle,
+                             schedule_slot: item.slotLabel,
+                             credits_amount: item.credits,
+                             studio: {
+                                 name: item.studio.name,
+                                 location: `${item.studio.neighborhood} · ${item.studio.distance} ${item.studio.distanceUnit}`
+                             },
+                             stars: item.rating.average,
+                             number_of_reviews: item.rating.count,
+                             review_status: item.rating.badge,
+                             thumbnail: item.thumbnailUrl
+                         }));
+                         
+                         generateCarouselCards(newCarouselData);
+                         console.log('✅ Carousel updated!');
+                     }
+                     
+                     // Stop generating animation
+                     generateBtn.classList.remove('generating');
+                     isGenerating = false;
+                     
+                     // Change title back to static purple
+                     setTimeout(() => {
+                         sectionTitle.style.opacity = '0';
+                         setTimeout(() => {
+                             sectionTitle.textContent = 'Generate schedule';
+                             sectionTitle.classList.remove('ai-generating');
+                             sectionTitle.classList.add('ai-active');
+                             sectionTitle.style.opacity = '1';
+                         }, 200);
+                     }, 500);
+                     
+                 } catch (error) {
+                     console.error('❌ API Error:', error);
+                     
+                     // Show error in textarea
+                     if (textarea) {
+                         textarea.value = 'Error: Failed to generate schedule. Please try again.';
+                         textarea.style.color = '#FF0000';
+                         textarea.disabled = true;
+                     }
+                     
+                     // Reset state
+                     generateBtn.classList.remove('generating');
+                     isGenerating = false;
+                     
+                     setTimeout(() => {
+                         sectionTitle.style.opacity = '0';
+                         setTimeout(() => {
+                             sectionTitle.textContent = 'Generate schedule';
+                             sectionTitle.classList.remove('ai-generating');
+                             sectionTitle.classList.add('ai-active');
+                             sectionTitle.style.opacity = '1';
+                         }, 200);
+                     }, 500);
+                 }
              }
              
              // Handle Enter key in textarea
