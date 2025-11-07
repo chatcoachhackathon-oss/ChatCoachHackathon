@@ -394,7 +394,7 @@ svg {
     );
     background-size: 300% 100%;
     border-radius: var(--radius-md);
-    animation: shimmer 2.5s ease-in-out infinite;
+    animation: shimmer 4s ease-in-out infinite;
 }
 
 .skeleton-line {
@@ -407,7 +407,7 @@ svg {
     );
     background-size: 300% 100%;
     border-radius: 8px;
-    animation: shimmer 2.5s ease-in-out infinite;
+    animation: shimmer 4s ease-in-out infinite;
 }
 
 .skeleton-line:nth-child(1) {
