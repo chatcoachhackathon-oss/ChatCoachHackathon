@@ -167,15 +167,86 @@ To add more carousel items:
 - ✅ Navigation UI
 - ✅ Scrolling carousels
 - ✅ Dark background showcase
+- ✅ AI-powered schedule generation
+- ✅ Real-time API integration
+- ✅ Dynamic carousel updates
+- ✅ Session tracking with ID
+- ✅ Live clock in status bar
+
+## 🤖 AI Schedule Generation
+
+### How It Works:
+
+1. **Click the AI icon** (✨ sparkle) in the "Recommended for you" section
+2. **Title changes** to "Generate schedule" (static purple)
+3. **Input field appears** with arrow button on the right
+4. **Type your request**: e.g., "plan my workout week"
+5. **Click the arrow button** (⬆️) or press Enter
+6. **API call is made** to the workout generation endpoint
+7. **"Thinking..."** shows in the input with animated dots
+8. **Title shows** flowing gradient with "Generating schedule..."
+9. **Carousel updates** with your personalized workout schedule!
+
+### API Integration:
+
+**Endpoint**: 
+```
+POST https://chatcoachhackathon.app.n8n.cloud/webhook/a889d2ae-2159-402f-b326-5f61e90f602e/chat
+```
+
+**Request Format**:
+```json
+{
+  "action": "sendMessage",
+  "chatInput": "user input text",
+  "sessionId": "SID-xxxxxxxxxxxx"
+}
+```
+
+**Response Format**:
+```json
+{
+  "answer": "text response",
+  "workout_schedule": [
+    {
+      "classTitle": "Strength Class",
+      "slotLabel": "Mon, 7:00 AM",
+      "credits": 5,
+      "studio": {
+        "name": "Virgin",
+        "neighborhood": "Eixample",
+        "distance": 1.2,
+        "distanceUnit": "km"
+      },
+      "rating": {
+        "average": 4.9,
+        "count": 200,
+        "badge": "Excellent"
+      },
+      "thumbnailUrl": "https://..."
+    }
+  ]
+}
+```
+
+### Session Tracking:
+
+- **Session ID**: Visible in bottom right corner (dark gray badge)
+- **Format**: `SID-xxxxxxxxxxxx` (12 random chars)
+- **Accessible**: `window.sessionId` in console
+- **Persistent**: Same ID throughout page session
+- **Click to copy**: Copy icon (📋) copies session ID to clipboard
+- **Selectable**: Can highlight and copy manually
 
 ## 📝 Notes
 
 - `index.html` = Main entry point with device mockup on dark background
 - `screen.html` = The actual mobile app interface (375x831px)
-- The status bar mimics iPhone 12 design
+- The status bar shows **real-time clock** (updates every minute)
 - Bottom navigation has 5 tabs (Home, Search, Add Credits, Upcoming, Profile)
-- Currently showing placeholder content
-- Ready for you to add real data and functionality!
+- **AI-powered**: Real workout schedule generation via API
+- **Dynamic carousel**: Updates automatically with API response
+- **Session tracking**: Unique ID for each session
 
 ---
 
@@ -185,5 +256,6 @@ To add more carousel items:
 - Adjust colors or spacing
 - Add JavaScript functionality
 - Make it responsive for desktop
+- Debug API issues
 
 Happy coding! 🚀

@@ -16,14 +16,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50" style="margin: 0; padding: 0; overflow: hidden;">
     
     <!-- Mobile Container -->
     <div class="home-container">
         
         <!-- Status Bar -->
         <div class="status-bar">
-            <div class="time">9:41</div>
+            <div class="time" id="current-time">9:41</div>
             <div class="status-icons">
                 <!-- Signal Icon -->
                 <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
@@ -94,58 +94,9 @@
                         </div>
                     </div>
 
-                    <!-- Carousel -->
-                    <div class="carousel">
-                        <div class="carousel-card">
-                            <img src="https://placehold.co/164x110" alt="Sweat440" class="carousel-img">
-                            <div class="carousel-content">
-                                <h3>Sweat440</h3>
-                                <p class="location">Chelsea · 2.4 mi</p>
-                                <p class="tags">Strength Training</p>
-                                <div class="rating">
-                                    <span class="rating-score">4.9</span>
-                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                        <path d="M5.5616 1.25938C5.75146 0.913539 6.24833 0.913539 6.43819 1.25938L7.76271 3.67206C7.83452 3.80287 7.96101 3.89476 8.10761 3.92264L10.8115 4.43677C11.1991 4.51047 11.3526 4.98302 11.0824 5.27046L9.19708 7.2757C9.09487 7.38442 9.04655 7.53312 9.06534 7.68115L9.41192 10.4116C9.4616 10.803 9.05963 11.095 8.70274 10.9268L6.21306 9.75346C6.07807 9.68984 5.92173 9.68984 5.78674 9.75346L3.29705 10.9268C2.94017 11.095 2.53819 10.803 2.58787 10.4116L2.93445 7.68115C2.95324 7.53312 2.90493 7.38442 2.80271 7.2757L0.917423 5.27046C0.647177 4.98302 0.800717 4.51047 1.18831 4.43677L3.89219 3.92264C4.03879 3.89476 4.16528 3.80287 4.23709 3.67206L5.5616 1.25938Z" fill="black"/>
-                                    </svg>
-                                    <span class="rating-count">(5000+)</span>
-                                    <span class="rating-label">Excellent</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="carousel-card">
-                            <img src="https://placehold.co/164x110" alt="The Fhitting Room" class="carousel-img">
-                            <div class="carousel-content">
-                                <h3>The Fhitting Room</h3>
-                                <p class="location">Flatiron · 2.9 mi</p>
-                                <p class="tags">Strength Training</p>
-                                <div class="rating">
-                                    <span class="rating-score">4.9</span>
-                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                        <path d="M5.5616 1.25938C5.75146 0.913539 6.24833 0.913539 6.43819 1.25938L7.76271 3.67206C7.83452 3.80287 7.96101 3.89476 8.10761 3.92264L10.8115 4.43677C11.1991 4.51047 11.3526 4.98302 11.0824 5.27046L9.19708 7.2757C9.09487 7.38442 9.04655 7.53312 9.06534 7.68115L9.41192 10.4116C9.4616 10.803 9.05963 11.095 8.70274 10.9268L6.21306 9.75346C6.07807 9.68984 5.92173 9.68984 5.78674 9.75346L3.29705 10.9268C2.94017 11.095 2.53819 10.803 2.58787 10.4116L2.93445 7.68115C2.95324 7.53312 2.90493 7.38442 2.80271 7.2757L0.917423 5.27046C0.647177 4.98302 0.800717 4.51047 1.18831 4.43677L3.89219 3.92264C4.03879 3.89476 4.16528 3.80287 4.23709 3.67206L5.5616 1.25938Z" fill="black"/>
-                                    </svg>
-                                    <span class="rating-count">(5000+)</span>
-                                    <span class="rating-label">Excellent</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="carousel-card">
-                            <img src="https://placehold.co/164x110" alt="Mile High Run Club" class="carousel-img">
-                            <div class="carousel-content">
-                                <h3>Mile High Run Club</h3>
-                                <p class="location">Noho · 3.2 mi</p>
-                                <p class="tags">Running, Outdoors</p>
-                                <div class="rating">
-                                    <span class="rating-score">4.9</span>
-                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                        <path d="M5.5616 1.25938C5.75146 0.913539 6.24833 0.913539 6.43819 1.25938L7.76271 3.67206C7.83452 3.80287 7.96101 3.89476 8.10761 3.92264L10.8115 4.43677C11.1991 4.51047 11.3526 4.98302 11.0824 5.27046L9.19708 7.2757C9.09487 7.38442 9.04655 7.53312 9.06534 7.68115L9.41192 10.4116C9.4616 10.803 9.05963 11.095 8.70274 10.9268L6.21306 9.75346C6.07807 9.68984 5.92173 9.68984 5.78674 9.75346L3.29705 10.9268C2.94017 11.095 2.53819 10.803 2.58787 10.4116L2.93445 7.68115C2.95324 7.53312 2.90493 7.38442 2.80271 7.2757L0.917423 5.27046C0.647177 4.98302 0.800717 4.51047 1.18831 4.43677L3.89219 3.92264C4.03879 3.89476 4.16528 3.80287 4.23709 3.67206L5.5616 1.25938Z" fill="black"/>
-                                    </svg>
-                                    <span class="rating-count">(5000+)</span>
-                                    <span class="rating-label">Excellent</span>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Carousel - Dynamically loaded from JSON -->
+                    <div id="carousel-container" class="carousel">
+                        <!-- Cards will be generated dynamically -->
                     </div>
                 </section>
 
@@ -166,7 +117,7 @@
                                 <p>Get $40 when your friend joins ClassPass.</p>
                                 <button class="btn-primary">Refer a friend</button>
                             </div>
-                            <img src="https://placehold.co/127x116" alt="Refer">
+                            <img src="https://i.ibb.co/LdQH2DpN/ef3c4e7d9fe1ec73670dc769a2f97eb9.png" alt="Refer">
                         </div>
 
                         <div class="promo-card">
@@ -237,38 +188,272 @@
     </div>
 
     <script>
-        // AI Icon Click Handler
+        // ============================================
+        // UPDATE REAL TIME IN STATUS BAR
+        // ============================================
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const timeString = `${hours}:${minutes.toString().padStart(2, '0')}`;
+            
+            const timeElement = document.getElementById('current-time');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+        
+        // Update time immediately and every minute
+        updateTime();
+        setInterval(updateTime, 60000); // Update every minute
+        
+        // ============================================
+        // CAROUSEL DATA - JSON Structure
+        // ============================================
+        const carouselData = [
+            {
+                activity_title: "Sweat440",
+                schedule_slot: "Mon, 9:00 AM",
+                credits_amount: 12,
+                studio: {
+                    name: "Sweat440",
+                    location: "Chelsea · 2.4 mi"
+                },
+                stars: 4.9,
+                number_of_reviews: 5000,
+                review_status: "Excellent",
+                thumbnail: "https://i.ibb.co/sdcrf0KL/38ced4204345d895f53e63a63455b67d.png"
+            },
+            {
+                activity_title: "The Fhitting Room",
+                schedule_slot: "Mon, 6:00 PM",
+                credits_amount: 14,
+                studio: {
+                    name: "The Fhitting Room",
+                    location: "Flatiron · 2.9 mi"
+                },
+                stars: 4.9,
+                number_of_reviews: 5000,
+                review_status: "Excellent",
+                thumbnail: "https://i.ibb.co/jZ3CGTs9/14ecd9d0262640014dca595cf0d381c6.png"
+            },
+            {
+                activity_title: "Mile High Run Club",
+                schedule_slot: "Tue, 7:00 AM",
+                credits_amount: 11,
+                studio: {
+                    name: "Mile High Run Club",
+                    location: "Noho · 3.2 mi"
+                },
+                stars: 4.9,
+                number_of_reviews: 5000,
+                review_status: "Excellent",
+                thumbnail: "https://i.ibb.co/q37zc1sJ/e580e2c8952168b8185108a6ba5d000b.png"
+            },
+            {
+                activity_title: "Barry's Bootcamp",
+                schedule_slot: "Wed, 5:30 PM",
+                credits_amount: 15,
+                studio: {
+                    name: "Barry's Bootcamp",
+                    location: "Chelsea · 3.0 mi"
+                },
+                stars: 4.8,
+                number_of_reviews: 7500,
+                review_status: "Excellent",
+                thumbnail: "https://i.ibb.co/ycC6fwND/85547e3101083a81c35e019c508e751a.png"
+            },
+            {
+                activity_title: "SoulCycle",
+                schedule_slot: "Thu, 6:30 AM",
+                credits_amount: 13,
+                studio: {
+                    name: "SoulCycle",
+                    location: "Tribeca · 3.5 mi"
+                },
+                stars: 4.7,
+                number_of_reviews: 6200,
+                review_status: "Excellent",
+                thumbnail: "https://i.ibb.co/Rf62dHw/1bbf93da00625e1c67ed4eca71ec05ff.png"
+            }
+        ];
+
+        // ============================================
+        // CAROUSEL FUNCTIONALITY
+        // ============================================
         document.addEventListener('DOMContentLoaded', function() {
+            
+            // Generate Carousel Cards from JSON
+            function generateCarouselCards(data) {
+                const container = document.getElementById('carousel-container');
+                container.innerHTML = ''; // Clear existing content
+                
+                data.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'carousel-card';
+                    
+                    card.innerHTML = `
+                        <img src="${item.thumbnail}" alt="${item.activity_title}" class="carousel-img">
+                        <div class="carousel-content">
+                            <h3>${item.studio.name}</h3>
+                            <p class="location">${item.studio.location}</p>
+                            <p class="tags">${item.activity_title}</p>
+                            <div class="rating">
+                                <span class="rating-score">${item.stars}</span>
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                    <path d="M5.5616 1.25938C5.75146 0.913539 6.24833 0.913539 6.43819 1.25938L7.76271 3.67206C7.83452 3.80287 7.96101 3.89476 8.10761 3.92264L10.8115 4.43677C11.1991 4.51047 11.3526 4.98302 11.0824 5.27046L9.19708 7.2757C9.09487 7.38442 9.04655 7.53312 9.06534 7.68115L9.41192 10.4116C9.4616 10.803 9.05963 11.095 8.70274 10.9268L6.21306 9.75346C6.07807 9.68984 5.92173 9.68984 5.78674 9.75346L3.29705 10.9268C2.94017 11.095 2.53819 10.803 2.58787 10.4116L2.93445 7.68115C2.95324 7.53312 2.90493 7.38442 2.80271 7.2757L0.917423 5.27046C0.647177 4.98302 0.800717 4.51047 1.18831 4.43677L3.89219 3.92264C4.03879 3.89476 4.16528 3.80287 4.23709 3.67206L5.5616 1.25938Z" fill="black"/>
+                                </svg>
+                                <span class="rating-count">(${item.number_of_reviews >= 1000 ? (item.number_of_reviews / 1000).toFixed(0) + 'k' : item.number_of_reviews}+)</span>
+                                <span class="rating-label">${item.review_status}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+            }
+            
+            // Initialize carousel with data
+            generateCarouselCards(carouselData);
+            
+            // Add drag to scroll functionality
+            const carousel = document.getElementById('carousel-container');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            
+            carousel.addEventListener('mousedown', (e) => {
+                isDown = true;
+                carousel.style.cursor = 'grabbing';
+                startX = e.pageX - carousel.offsetLeft;
+                scrollLeft = carousel.scrollLeft;
+            });
+            
+            carousel.addEventListener('mouseleave', () => {
+                isDown = false;
+                carousel.style.cursor = 'grab';
+            });
+            
+            carousel.addEventListener('mouseup', () => {
+                isDown = false;
+                carousel.style.cursor = 'grab';
+            });
+            
+            carousel.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - carousel.offsetLeft;
+                const walk = (x - startX) * 2; // Scroll speed multiplier
+                carousel.scrollLeft = scrollLeft - walk;
+            });
+            
+            // Touch support for mobile
+            let touchStartX = 0;
+            let touchScrollLeft = 0;
+            
+            carousel.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].pageX;
+                touchScrollLeft = carousel.scrollLeft;
+            }, { passive: true });
+            
+            carousel.addEventListener('touchmove', (e) => {
+                const x = e.touches[0].pageX;
+                const walk = (touchStartX - x) * 1.5;
+                carousel.scrollLeft = touchScrollLeft + walk;
+            }, { passive: true });
+            
+            // ============================================
+            // AI ICON FUNCTIONALITY
+            // ============================================
             const aiIcon = document.getElementById('ai-icon');
             const sectionTitle = document.getElementById('section-title');
             const aiInputBox = document.getElementById('ai-input-box');
             
             let isAIMode = false;
             
-            aiIcon.addEventListener('click', function() {
+            aiIcon.addEventListener('click', function(e) {
+                e.preventDefault();
                 isAIMode = !isAIMode;
                 
+                // Add visual feedback to icon click
+                aiIcon.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    aiIcon.style.transform = '';
+                }, 150);
+                
                 if (isAIMode) {
-                    // Switch to AI mode
-                    sectionTitle.textContent = 'Generating schedule...';
-                    sectionTitle.classList.add('ai-active');
-                    aiInputBox.classList.remove('hidden');
+                    // Switch to AI mode with smooth transition
+                    sectionTitle.style.opacity = '0';
+                    sectionTitle.style.transform = 'translateY(-5px)';
+                    
+                    setTimeout(() => {
+                        sectionTitle.textContent = 'Generating schedule';
+                        sectionTitle.classList.add('ai-active');
+                        sectionTitle.style.opacity = '1';
+                        sectionTitle.style.transform = 'translateY(0)';
+                        
+                        // Show input box after title animation
+                        setTimeout(() => {
+                            aiInputBox.classList.remove('hidden');
+                            // Auto-focus the input with smooth transition
+                            const input = aiInputBox.querySelector('.ai-input');
+                            if (input) {
+                                setTimeout(() => input.focus(), 100);
+                            }
+                        }, 200);
+                    }, 250);
+                    
                 } else {
-                    // Switch back to normal mode
-                    sectionTitle.textContent = 'Recommended for you';
-                    sectionTitle.classList.remove('ai-active');
-                    aiInputBox.classList.add('hidden');
+                    // Hide input box with fade out
+                    aiInputBox.style.opacity = '0';
+                    aiInputBox.style.transform = 'translateY(-10px)';
+                    
+                    setTimeout(() => {
+                        aiInputBox.classList.add('hidden');
+                        aiInputBox.style.opacity = '';
+                        aiInputBox.style.transform = '';
+                    }, 300);
+                    
+                    setTimeout(() => {
+                        sectionTitle.style.opacity = '0';
+                        sectionTitle.style.transform = 'translateY(-5px)';
+                        
+                        setTimeout(() => {
+                            sectionTitle.textContent = 'Recommended for you';
+                            sectionTitle.classList.remove('ai-active');
+                            sectionTitle.style.opacity = '1';
+                            sectionTitle.style.transform = 'translateY(0)';
+                        }, 250);
+                    }, 150);
                 }
             });
             
-            // Optional: Handle Enter key in AI input
+            // Handle Enter key in AI input
             const aiInput = document.querySelector('.ai-input');
+            
+            // Allow selection in AI input
+            aiInput.addEventListener('mousedown', function(e) {
+                e.stopPropagation();
+            });
+            
+            aiInput.addEventListener('selectstart', function(e) {
+                e.stopPropagation();
+            });
+            
             aiInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     console.log('AI Search:', aiInput.value);
-                    // You can add AI search functionality here
+                    // Access session ID from parent window
+                    console.log('Session ID:', window.parent.sessionId || 'No session');
+                    // You can update carouselData here and call:
+                    // generateCarouselCards(newCarouselData);
                 }
             });
+            
+            // Example function to update carousel dynamically
+            window.updateCarousel = function(newData) {
+                generateCarouselCards(newData);
+            };
         });
     </script>
 
