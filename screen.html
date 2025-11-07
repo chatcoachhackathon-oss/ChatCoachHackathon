@@ -789,7 +789,11 @@
                          }));
                          
                          generateCarouselCards(newCarouselData);
-                         console.log('✅ Carousel updated!');
+                         console.log('✅ Carousel updated with new workouts!');
+                     } else {
+                         console.log('⚠️ Empty workout_schedule, showing original carousel');
+                         generateCarouselCards(carouselData);
+                         console.log('✅ Original carousel restored!');
                      }
                      
                      // Stop generating animation
