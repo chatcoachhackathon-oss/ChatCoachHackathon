@@ -215,6 +215,91 @@
             color: #666;
             font-size: 14px;
         }
+
+        /* Session ID Container */
+        .session-id-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 99999;
+        }
+
+        /* Session ID Badge */
+        .session-id {
+            font-size: 11px;
+            color: #999999;
+            background: rgba(40, 40, 40, 0.7);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            pointer-events: auto;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+            cursor: text;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .session-id:hover {
+            background: rgba(50, 50, 50, 0.9);
+            color: #cccccc;
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .session-id::selection {
+            background: rgba(66, 133, 244, 0.4);
+            color: #ffffff;
+        }
+
+        .session-id::-moz-selection {
+            background: rgba(66, 133, 244, 0.4);
+            color: #ffffff;
+        }
+
+        /* Copy Button */
+        .copy-btn {
+            background: rgba(40, 40, 40, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 6px 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .copy-btn:hover {
+            background: rgba(50, 50, 50, 0.9);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            transform: scale(1.05);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Copy Success Feedback */
+        .copy-btn.copied {
+            background: rgba(76, 175, 80, 0.8);
+            border-color: rgba(76, 175, 80, 1);
+        }
     </style>
 </head>
 <body>
@@ -255,10 +340,103 @@
 
     </div>
 
+    <!-- Session ID - Bottom Right of Screen -->
+    <div class="session-id-container">
+        <div id="session-id" class="session-id"></div>
+        <button id="copy-btn" class="copy-btn" title="Copy Session ID">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z" fill="#999999"/>
+            </svg>
+        </button>
+    </div>
+
     <script>
+        // ============================================
+        // GENERATE SESSION ID
+        // ============================================
+        function generateSessionId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let sessionId = 'SID-';
+            for (let i = 0; i < 12; i++) {
+                sessionId += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return sessionId;
+        }
+        
+        // Store session ID globally for later use
+        window.sessionId = generateSessionId();
+        
+        // Display session ID
+        const sessionIdElement = document.getElementById('session-id');
+        if (sessionIdElement) {
+            sessionIdElement.textContent = window.sessionId;
+        }
+        
+        console.log('Session ID:', window.sessionId);
+        
+        // ============================================
+        // COPY TO CLIPBOARD FUNCTIONALITY
+        // ============================================
+        const copyBtn = document.getElementById('copy-btn');
+        
+        copyBtn.addEventListener('click', async function() {
+            try {
+                // Copy session ID to clipboard
+                await navigator.clipboard.writeText(window.sessionId);
+                
+                // Visual feedback
+                copyBtn.classList.add('copied');
+                
+                // Change icon color temporarily
+                const svgPath = copyBtn.querySelector('path');
+                const originalColor = svgPath.getAttribute('fill');
+                svgPath.setAttribute('fill', '#ffffff');
+                
+                // Reset after 1.5 seconds
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    svgPath.setAttribute('fill', originalColor);
+                }, 1500);
+                
+                console.log('Session ID copied to clipboard:', window.sessionId);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = window.sessionId;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                // Visual feedback
+                copyBtn.classList.add('copied');
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                }, 1500);
+            }
+        });
+        
         // Loading handler
         document.addEventListener('DOMContentLoaded', function() {
             // Device is now completely static
+        });
+        
+        // Prevent any selection or drag (except session ID)
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Prevent text selection on mouse down (except session ID)
+        document.addEventListener('selectstart', function(e) {
+            if (e.target.id === 'session-id') {
+                return true; // Allow selection on session ID
+            }
+            e.preventDefault();
+            return false;
         });
     </script>
 </body>
