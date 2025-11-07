@@ -93,7 +93,7 @@
                             <textarea id="ai-textarea" class="ai-textarea" rows="1" placeholder="Plan your week with AI"></textarea>
                         </div>
                         <div class="ai-buttons">
-                            <button id="refresh-btn" class="action-btn-circle" type="button" title="Start fresh (new session)">
+                            <button id="refresh-btn" class="action-btn-circle hidden" type="button" title="Get alternate recommendations">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 4V1L8 5L12 9V6C15.31 6 18 8.69 18 12C18 13.01 17.75 13.97 17.3 14.8L18.76 16.26C19.54 15.03 20 13.57 20 12C20 7.58 16.42 4 12 4ZM12 18C8.69 18 6 15.31 6 12C6 10.99 6.25 10.03 6.7 9.2L5.24 7.74C4.46 8.97 4 10.43 4 12C4 16.42 7.58 20 12 20V23L16 19L12 15V18Z" fill="white"/>
                                 </svg>
@@ -109,8 +109,9 @@
                                     <path d="M12 4L12 20M12 4L8 8M12 4L16 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <!-- Checkmark SVG (shows when workouts received) -->
-                                <svg id="check-icon" class="hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5 13L9 17L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg id="check-icon" class="hidden" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="20" cy="20" r="16" fill="#0055FF"/>
+                                    <path d="M17.6346 23.577L13.7629 19.705C13.5321 19.4744 13.2419 19.3563 12.8925 19.3508C12.5433 19.3455 12.2479 19.4636 12.0062 19.705C11.7649 19.9466 11.6442 20.2394 11.6442 20.5833C11.6442 20.9272 11.7649 21.22 12.0062 21.4616L16.58 26.0354C16.8814 26.3365 17.2329 26.487 17.6346 26.487C18.0362 26.487 18.3878 26.3365 18.6892 26.0354L27.9617 16.7629C28.1922 16.532 28.3103 16.2419 28.3158 15.8925C28.3211 15.5433 28.203 15.2479 27.9617 15.0062C27.72 14.7648 27.4272 14.6441 27.0833 14.6441C26.7394 14.6441 26.4467 14.7648 26.205 15.0062L17.6346 23.577Z" fill="white"/>
                                 </svg>
                             </button>
                         </div>
@@ -623,9 +624,12 @@
                      hasResponse = false;
                      hasWorkouts = false;
                      
-                     // Hide "Book all" button
+                     // Hide "Book all" button and refresh button
                      if (bookAllBtn) {
                          bookAllBtn.classList.add('hidden');
+                     }
+                     if (refreshBtn) {
+                         refreshBtn.classList.add('hidden');
                      }
                      
                      // Switch checkmark back to arrow
@@ -658,6 +662,7 @@
                              sectionTitle.textContent = 'Recommended for you';
                              sectionTitle.classList.remove('ai-active');
                              sectionTitle.classList.remove('ai-generating');
+                             sectionTitle.classList.remove('ai-completed');
                              sectionTitle.style.opacity = '1';
                              sectionTitle.style.transform = 'translateY(0)';
                          }, 250);
@@ -682,7 +687,7 @@
                          return;
                      }
                      
-                     // If in checkmark mode, collapse textbox
+                     // If in checkmark mode, collapse textbox and show "Book all"
                      if (isCheckmarkMode) {
                          console.log('✅ Checkmark clicked - Collapsing textbox');
                          
@@ -696,12 +701,18 @@
                              aiInputBox.style.transform = '';
                          }, 300);
                          
-                         // Title stays as "This week's plan"
+                         // Title stays as "This week's plan" (black)
                          sectionTitle.textContent = "This week's plan";
                          sectionTitle.classList.remove('ai-active');
                          sectionTitle.classList.remove('ai-generating');
+                         sectionTitle.classList.add('ai-completed');
                          
-                         // Keep "Book all" button visible
+                         // NOW show "Book all" button
+                         if (bookAllBtn) {
+                             bookAllBtn.classList.remove('hidden');
+                             console.log('📘 "Book all" button shown after confirmation');
+                         }
+                         
                          // Keep carousel with workout data
                          
                          console.log('✅ Textbox collapsed, schedule visible');
@@ -778,83 +789,49 @@
              }
              
              // ============================================
-             // REFRESH BUTTON - Start Fresh with New Session
+             // REFRESH BUTTON - Get Alternate Recommendations
              // ============================================
              if (refreshBtn) {
-                 refreshBtn.addEventListener('click', function(e) {
+                 refreshBtn.addEventListener('click', async function(e) {
                      e.preventDefault();
-                     console.log('🔄 Refresh button clicked - Starting fresh!');
+                     console.log('🔄 Refresh button clicked - Getting alternate recommendations!');
                      
-                     // Generate new session ID
-                     function generateNewSessionId() {
-                         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                         let sessionId = 'SID-';
-                         for (let i = 0; i < 12; i++) {
-                             sessionId += chars.charAt(Math.floor(Math.random() * chars.length));
-                         }
-                         return sessionId;
+                     if (isGenerating) {
+                         console.log('⚠️ Already generating, ignoring click');
+                         return;
                      }
                      
-                     window.sessionId = generateNewSessionId();
+                     // Start generating state
+                     isGenerating = true;
+                     disableAllButtons();
                      
-                     // Update parent window session ID too
-                     if (window.parent && window.parent.sessionId) {
-                         window.parent.sessionId = window.sessionId;
-                     }
+                     const sessionId = window.parent.sessionId || window.sessionId || 'SID-default';
                      
-                     console.log('New Session ID:', window.sessionId);
-                     
-                     // Update session ID display (if visible)
-                     if (window.parent && window.parent.document) {
-                         const parentSessionEl = window.parent.document.getElementById('session-id');
-                         if (parentSessionEl) {
-                             parentSessionEl.textContent = window.sessionId;
-                         }
-                     }
-                     
-                     // Reset textarea
+                     // Update textarea to show we're getting alternates
                      const textarea = document.getElementById('ai-textarea');
                      if (textarea) {
-                         textarea.value = '';
-                         textarea.style.color = '#000000';
-                         textarea.disabled = false;
-                         textarea.readOnly = false;
-                         textarea.style.height = 'auto';
-                         setTimeout(() => textarea.focus(), 100);
+                         const originalValue = textarea.value;
+                         textarea.value = 'Getting alternate recommendations...';
+                         textarea.style.color = '#CCCCCC';
+                         textarea.disabled = true;
+                         textarea.dataset.originalValue = originalValue;
                      }
                      
-                     // Reset carousel to initial data
-                     generateCarouselCards(carouselData);
+                     // Change title to generating state
+                     sectionTitle.style.opacity = '0';
+                     setTimeout(() => {
+                         sectionTitle.textContent = 'Generating schedule';
+                         sectionTitle.classList.add('ai-generating');
+                         sectionTitle.style.opacity = '1';
+                     }, 200);
                      
-                     // Reset title
-                     sectionTitle.textContent = 'Generate schedule';
-                     sectionTitle.classList.add('ai-active');
-                     sectionTitle.classList.remove('ai-generating');
-                     sectionTitle.style.opacity = '1';
+                     // Show skeleton cards
+                     generateSkeletonCards(3);
                      
-                     // Reset states
-                     isGenerating = false;
-                     hasResponse = false;
-                     hasWorkouts = false;
+                     // Make API call with "Give me alternate recommendations"
+                     makeAPICall('Give me alternate recommendations', sessionId, textarea);
                      
-                     // Hide "Book all" button
-                     if (bookAllBtn) {
-                         bookAllBtn.classList.add('hidden');
-                         console.log('📘 "Book all" button hidden');
-                     }
-                     
-                     // Switch checkmark back to arrow
-                     switchToArrow();
-                     
-                     if (generateBtn) {
-                         generateBtn.classList.remove('generating');
-                     }
-                     
-                     // Update button state
-                     updateGenerateButtonState();
-                     
-                     console.log('✅ Fresh start complete with new session!');
-                     console.log('📌 All states reset');
+                     console.log('📡 Requesting alternate recommendations with same session');
                  });
              }
              
@@ -900,6 +877,7 @@
                              sectionTitle.textContent = 'Recommended for you';
                              sectionTitle.classList.remove('ai-active');
                              sectionTitle.classList.remove('ai-generating');
+                             sectionTitle.classList.remove('ai-completed');
                              sectionTitle.style.opacity = '1';
                          }, 200);
                      }, 150);
@@ -910,9 +888,12 @@
                      hasResponse = false;
                      hasWorkouts = false;
                      
-                     // Hide "Book all" button
+                     // Hide "Book all" button and refresh button
                      if (bookAllBtn) {
                          bookAllBtn.classList.add('hidden');
+                     }
+                     if (refreshBtn) {
+                         refreshBtn.classList.add('hidden');
                      }
                      
                      // Switch checkmark back to arrow
@@ -1075,24 +1056,39 @@
                          generateCarouselCards(newCarouselData);
                          console.log('✅ Carousel updated with new workouts!');
                          
-                         // Show "Book all" button and change title
+                         // Mark that we have workouts (but don't show "Book all" yet)
                          hasWorkouts = true;
-                         if (bookAllBtn) {
-                             bookAllBtn.classList.remove('hidden');
-                             console.log('📘 "Book all" button shown');
+                         
+                         // Show refresh button (alternate recommendations)
+                         if (refreshBtn) {
+                             refreshBtn.classList.remove('hidden');
+                             refreshBtn.classList.remove('disabled');
+                             console.log('🔄 Refresh button shown (alternate recommendations)');
                          }
+                         
                          sectionTitle.textContent = "This week's plan";
+                         sectionTitle.classList.remove('ai-active');
+                         sectionTitle.classList.remove('ai-generating');
+                         sectionTitle.classList.add('ai-completed');
                          
                          // Switch arrow button to checkmark
                          switchToCheckmark();
+                         
+                         // Note: "Book all" button will appear when checkmark is clicked
                          
                      } else {
                          console.log('⚠️ Empty workout_schedule, showing original carousel');
                          generateCarouselCards(carouselData);
                          hasWorkouts = false;
+                         
+                         // Hide both "Book all" and refresh buttons
                          if (bookAllBtn) {
                              bookAllBtn.classList.add('hidden');
                          }
+                         if (refreshBtn) {
+                             refreshBtn.classList.add('hidden');
+                         }
+                         
                          console.log('✅ Original carousel restored!');
                      }
                      
@@ -1101,12 +1097,16 @@
                      isGenerating = false;
                      enableButtons();
                      
-                     // Change title back to static purple (or "This week's plan" if has workouts)
+                     // Change title back (or keep "This week's plan" if has workouts)
                      setTimeout(() => {
                          sectionTitle.style.opacity = '0';
                          setTimeout(() => {
-                             // Keep "This week's plan" if we have workouts, otherwise "Generate schedule"
-                             if (!hasWorkouts) {
+                             if (hasWorkouts) {
+                                 // Keep "This week's plan" in black
+                                 sectionTitle.textContent = "This week's plan";
+                                 sectionTitle.classList.remove('ai-generating');
+                                 sectionTitle.classList.add('ai-completed');
+                             } else {
                                  sectionTitle.textContent = 'Generate schedule';
                                  sectionTitle.classList.remove('ai-generating');
                                  sectionTitle.classList.add('ai-active');

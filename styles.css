@@ -244,6 +244,12 @@ img {
     color: #5F53FF;
 }
 
+.section-header h2.ai-completed {
+    color: #000000;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+}
+
 .section-header h2.ai-generating {
     width: 256px !important;
     font-size: 20px !important;
@@ -720,8 +726,6 @@ svg {
 }
 
 .generate-btn-circle svg {
-    width: 24px;
-    height: 24px;
     pointer-events: none;
 }
 
@@ -729,8 +733,16 @@ svg {
     pointer-events: none !important;
 }
 
-.generate-btn-circle svg path {
-    fill: white;
+/* Arrow icon - smaller */
+#arrow-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Checkmark icon - full size */
+#check-icon {
+    width: 40px;
+    height: 40px;
 }
 
 .generate-btn-circle.generating {
