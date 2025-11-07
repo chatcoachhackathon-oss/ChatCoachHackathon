@@ -104,8 +104,13 @@
                                 </svg>
                             </button>
                             <button id="generate-btn" class="generate-btn-circle" type="button" title="Generate schedule">
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Arrow Up SVG (default) -->
+                                <svg id="arrow-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M18.75 18.5608V24.9037C18.75 25.2579 18.8699 25.5548 19.1096 25.7945C19.3493 26.034 19.6462 26.1537 20.0004 26.1537C20.3549 26.1537 20.6544 26.0325 20.8992 25.79C21.1436 25.5472 21.2658 25.2465 21.2658 24.8879V18.5608L23.4871 20.782C23.7179 21.0129 24.0081 21.1255 24.3575 21.12C24.7067 21.1147 24.9967 20.9966 25.2275 20.7658C25.4583 20.5352 25.5737 20.2444 25.5737 19.8933C25.5737 19.5422 25.5583 19.253 25.2275 19.0258L21.0704 14.8845C20.7693 14.5834 20.4178 14.4329 20.0158 14.4329C19.6142 14.4329 19.2628 14.5834 18.9617 14.8845L14.8046 19.0416C14.5737 19.2725 14.4583 19.5598 14.4583 19.9037C14.4583 20.2479 14.5737 20.5352 14.8046 20.7658C15.0354 20.9966 15.3264 21.112 15.6775 21.112C16.0286 21.112 16.3178 20.9966 16.545 20.7658L18.75 18.5608ZM20.0029 35.8333C17.8129 35.8333 15.7544 35.4177 13.8275 34.5866C11.9006 33.7555 10.2244 32.6276 8.79916 31.2029C7.37389 29.7782 6.24541 28.1027 5.41375 26.1766C4.58236 24.2505 4.16666 22.1926 4.16666 20.0029C4.16666 17.8129 4.58222 15.7544 5.41333 13.8275C6.24444 11.9005 7.37236 10.2244 8.79708 8.79913C10.2218 7.37385 11.8972 6.24538 13.8233 5.41371C15.7494 4.58232 17.8074 4.16663 19.9971 4.16663C22.1871 4.16663 24.2456 4.58218 26.1725 5.41329C28.0994 6.2444 29.7756 7.37232 31.2008 8.79704C32.6261 10.2218 33.7546 11.8972 34.5862 13.8233C35.4176 15.7494 35.8333 17.8073 35.8333 19.997C35.8333 22.187 35.4178 24.2455 34.5867 26.1725C33.7556 28.0994 32.6276 29.7755 31.2029 31.2008C29.7782 32.6261 28.1028 33.7545 26.1767 34.5862C24.2506 35.4176 22.1926 35.8333 20.0029 35.8333Z" fill="#0055FF"/>
+                                </svg>
+                                <!-- Checkmark SVG (shows when workouts received) -->
+                                <svg id="check-icon" class="hidden" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.6346 23.577L13.7629 19.705C13.5321 19.4744 13.2419 19.3563 12.8925 19.3508C12.5433 19.3455 12.2479 19.4636 12.0062 19.705C11.7649 19.9466 11.6442 20.2394 11.6442 20.5833C11.6442 20.9272 11.7649 21.22 12.0062 21.4616L16.58 26.0354C16.8814 26.3365 17.2329 26.487 17.6346 26.487C18.0362 26.487 18.3878 26.3365 18.6892 26.0354L27.9617 16.7629C28.1922 16.532 28.3103 16.2419 28.3158 15.8925C28.3211 15.5433 28.203 15.2479 27.9617 15.0062C27.72 14.7648 27.4272 14.6441 27.0833 14.6441C26.7394 14.6441 26.4467 14.7648 26.205 15.0062L17.6346 23.577ZM20.0029 35.8333C17.8129 35.8333 15.7544 35.4177 13.8275 34.5866C11.9005 33.7555 10.2244 32.6276 8.79916 31.2029C7.37388 29.7782 6.24541 28.1027 5.41374 26.1766C4.58235 24.2505 4.16666 22.1926 4.16666 20.0029C4.16666 17.8129 4.58221 15.7544 5.41332 13.8275C6.24443 11.9005 7.37235 10.2244 8.79707 8.79913C10.2218 7.37385 11.8972 6.24538 13.8233 5.41371C15.7494 4.58232 17.8074 4.16663 19.9971 4.16663C22.1871 4.16663 24.2455 4.58218 26.1725 5.41329C28.0994 6.2444 29.7755 7.37232 31.2008 8.79704C32.6261 10.2218 33.7546 11.8972 34.5862 13.8233C35.4176 15.7494 35.8333 17.8073 35.8333 19.997C35.8333 22.187 35.4178 24.2455 34.5867 26.1725C33.7555 28.0994 32.6276 29.7755 31.2029 31.2008C29.7782 32.6261 28.1028 33.7545 26.1767 34.5862C24.2505 35.4176 22.1926 35.8333 20.0029 35.8333Z" fill="#0055FF"/>
                                 </svg>
                             </button>
                         </div>
@@ -499,10 +504,13 @@
              let isGenerating = false;
              let hasResponse = false; // Track if textarea has API response
              let hasWorkouts = false; // Track if we have workout schedule
+             let isCheckmarkMode = false; // Track if button shows checkmark
              
              const bookAllBtn = document.getElementById('book-all-btn');
              const refreshBtn = document.getElementById('refresh-btn');
              const clearBtn = document.getElementById('clear-btn');
+             const arrowIcon = document.getElementById('arrow-icon');
+             const checkIcon = document.getElementById('check-icon');
              
              // Function to disable all buttons
              function disableAllButtons() {
@@ -521,11 +529,45 @@
                  console.log('🔓 Buttons enabled');
              }
              
+             // Function to switch button to checkmark
+             function switchToCheckmark() {
+                 if (arrowIcon && checkIcon) {
+                     arrowIcon.classList.add('hidden');
+                     checkIcon.classList.remove('hidden');
+                     isCheckmarkMode = true;
+                     if (generateBtn) {
+                         generateBtn.setAttribute('title', 'Collapse schedule');
+                         generateBtn.classList.remove('disabled');
+                     }
+                     console.log('✅ Switched to checkmark mode');
+                 }
+             }
+             
+             // Function to switch button back to arrow
+             function switchToArrow() {
+                 if (arrowIcon && checkIcon) {
+                     checkIcon.classList.add('hidden');
+                     arrowIcon.classList.remove('hidden');
+                     isCheckmarkMode = false;
+                     if (generateBtn) {
+                         generateBtn.setAttribute('title', 'Generate schedule');
+                     }
+                     console.log('⬆️ Switched to arrow mode');
+                 }
+             }
+             
              // Function to update generate button state
              function updateGenerateButtonState() {
                  const textarea = document.getElementById('ai-textarea');
                  
                  if (!generateBtn || !textarea) return;
+                 
+                 // If in checkmark mode, always keep enabled
+                 if (isCheckmarkMode) {
+                     generateBtn.classList.remove('disabled');
+                     console.log('✅ Generate button enabled (checkmark mode)');
+                     return;
+                 }
                  
                  const isEmpty = !textarea.value.trim();
                  const shouldDisable = isEmpty || hasResponse || isGenerating;
@@ -585,6 +627,9 @@
                          bookAllBtn.classList.add('hidden');
                      }
                      
+                     // Switch checkmark back to arrow
+                     switchToArrow();
+                     
                      // Hide input box with fade out
                      aiInputBox.style.opacity = '0';
                      aiInputBox.style.transform = 'translateY(-10px)';
@@ -600,6 +645,9 @@
                              textarea.value = '';
                          }
                      }, 300);
+                     
+                     // Reset carousel to original
+                     generateCarouselCards(carouselData);
                      
                      setTimeout(() => {
                          sectionTitle.style.opacity = '0';
@@ -625,7 +673,7 @@
                  generateBtn.addEventListener('click', async function(e) {
                      e.preventDefault();
                      e.stopPropagation();
-                     console.log('🚀 Generate button CLICKED!');
+                     console.log('🚀 Button CLICKED! Checkmark mode:', isCheckmarkMode);
                      
                      // Check if button is disabled
                      if (generateBtn.classList.contains('disabled')) {
@@ -633,6 +681,33 @@
                          return;
                      }
                      
+                     // If in checkmark mode, collapse textbox
+                     if (isCheckmarkMode) {
+                         console.log('✅ Checkmark clicked - Collapsing textbox');
+                         
+                         // Collapse textbox with animation
+                         aiInputBox.style.opacity = '0';
+                         aiInputBox.style.transform = 'translateY(-10px)';
+                         
+                         setTimeout(() => {
+                             aiInputBox.classList.add('hidden');
+                             aiInputBox.style.opacity = '';
+                             aiInputBox.style.transform = '';
+                         }, 300);
+                         
+                         // Title stays as "This week's plan"
+                         sectionTitle.textContent = "This week's plan";
+                         sectionTitle.classList.remove('ai-active');
+                         sectionTitle.classList.remove('ai-generating');
+                         
+                         // Keep "Book all" button visible
+                         // Keep carousel with workout data
+                         
+                         console.log('✅ Textbox collapsed, schedule visible');
+                         return;
+                     }
+                     
+                     // Otherwise, standard arrow button behavior (make API request)
                      if (!isGenerating && !hasResponse) {
                          isGenerating = true;
                          console.log('Starting generation process...');
@@ -767,6 +842,9 @@
                          console.log('📘 "Book all" button hidden');
                      }
                      
+                     // Switch checkmark back to arrow
+                     switchToArrow();
+                     
                      if (generateBtn) {
                          generateBtn.classList.remove('generating');
                      }
@@ -809,6 +887,9 @@
                      // Reset states
                      isGenerating = false;
                      hasResponse = false; // Allow new input
+                     
+                     // Switch checkmark back to arrow (user will type new content)
+                     switchToArrow();
                      
                      if (generateBtn) {
                          generateBtn.classList.remove('generating');
@@ -968,6 +1049,9 @@
                              console.log('📘 "Book all" button shown');
                          }
                          sectionTitle.textContent = "This week's plan";
+                         
+                         // Switch arrow button to checkmark
+                         switchToCheckmark();
                          
                      } else {
                          console.log('⚠️ Empty workout_schedule, showing original carousel');
