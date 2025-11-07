@@ -289,10 +289,36 @@
              console.log('📱 DOM Content Loaded!');
              console.log('Looking for elements...');
              
+             // Generate Skeleton Loading Cards
+             function generateSkeletonCards(count = 3) {
+                const container = document.getElementById('carousel-container');
+                container.innerHTML = ''; // Clear existing content
+                console.log('🦴 Generating', count, 'skeleton cards');
+                
+                for (let i = 0; i < count; i++) {
+                    const card = document.createElement('div');
+                    card.className = 'skeleton-card';
+                    
+                    card.innerHTML = `
+                        <div class="skeleton-image"></div>
+                        <div class="carousel-content">
+                            <div class="skeleton-line"></div>
+                            <div class="skeleton-line"></div>
+                            <div class="skeleton-line"></div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                }
+                
+                console.log('✅ Skeleton cards displayed');
+             }
+             
              // Generate Carousel Cards from JSON
              function generateCarouselCards(data) {
                 const container = document.getElementById('carousel-container');
                 container.innerHTML = ''; // Clear existing content
+                console.log('🎨 Generating', data.length, 'real cards');
                 
                 data.forEach(item => {
                     const card = document.createElement('div');
@@ -317,7 +343,9 @@
                     
                     container.appendChild(card);
                 });
-            }
+                
+                console.log('✅ Real cards displayed');
+             }
             
             // Initialize carousel with data
             generateCarouselCards(carouselData);
@@ -491,6 +519,9 @@
                                  textarea.dataset.originalValue = originalValue;
                              }
                              
+                             // Show skeleton cards while loading
+                             generateSkeletonCards(3);
+                             
                              // Make API call
                              makeAPICall(userInput, sessionId, textarea);
                              
@@ -532,16 +563,32 @@
                      
                      const rawData = await response.json();
                      console.log('✅ Raw API Response:', rawData);
+                     console.log('Raw data type:', typeof rawData);
+                     console.log('Raw data keys:', Object.keys(rawData));
                      
                      // Parse the output field which contains the actual JSON
                      let data;
                      if (rawData.output) {
                          console.log('📦 Parsing output field...');
-                         data = JSON.parse(rawData.output);
-                         console.log('✅ Parsed data:', data);
+                         console.log('Output content:', rawData.output);
+                         console.log('Output type:', typeof rawData.output);
+                         
+                         try {
+                             data = JSON.parse(rawData.output);
+                             console.log('✅ Parsed data successfully:', data);
+                         } catch (parseError) {
+                             console.error('❌ Error parsing output:', parseError);
+                             console.log('Output that failed to parse:', rawData.output);
+                             data = rawData;
+                         }
                      } else {
+                         console.log('No output field, using rawData directly');
                          data = rawData;
                      }
+                     
+                     console.log('📋 Final data object:', data);
+                     console.log('📋 Has answer?', 'answer' in data);
+                     console.log('📋 Has workout_schedule?', 'workout_schedule' in data);
                      
                      console.log('Answer from API:', data.answer);
                      console.log('Workout schedule:', data.workout_schedule);
