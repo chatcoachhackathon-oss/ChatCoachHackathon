@@ -327,6 +327,36 @@
         setInterval(updateTime, 60000); // Update every minute
         
         // ============================================
+        // RANDOM THUMBNAIL POOL
+        // ============================================
+        const thumbnailPool = [
+            "https://youfit.com/wp-content/uploads/2024/06/YouFit-06-20-22-2527-Edit.jpg",
+            "https://images.peopleimages.com/picture/202301/2578135-fitness-yoga-or-woman-stretching-in-gym-for-balance-flexible-spine-or-warm-up-body-with-healthy-breathing.-floor-breathe-or-zen-girl-in-training-exercise-or-workout-with-focus-or-flexibility--fit_400_400.jpg",
+            "https://t4.ftcdn.net/jpg/02/43/13/15/360_F_243131531_jmNppYX9Ux2Hj2RV9yYR1swicwcYr8EQ.jpg",
+            "https://media.istockphoto.com/id/464423718/photo/friends-exercise-in-gym.jpg?s=612x612&w=0&k=20&c=irmY7ahTerWqqVDJBRdx7aqi0HttRY9gTBLHzOdpLek=",
+            "https://www.guardian.in/cdn/shop/articles/What-is-the-importance-of-physical-fitness.jpg?crop=center&height=1200&v=1741004149&width=1200",
+            "https://gravity.fitness/cdn/shop/files/11-GravityFitness.webp?v=1749120795&width=767",
+            "https://media.istockphoto.com/id/1679800838/fr/photo/gros-plan-des-pieds-coureur-sportif-courant-sur-tapis-roulant-dans-un-club-de-fitness.jpg?s=612x612&w=0&k=20&c=79oBrSnh-TItQCgTq1w5Aey2POgA-sU8wJzWMhHJmUM=",
+            "https://www.shutterstock.com/image-photo/squat-woman-exercise-down-strengthen-260nw-2660361719.jpg",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvtWzabIH3STWW8YE5cOo1vluIYbAbTHgBkw&s",
+            "https://media.istockphoto.com/id/610431768/photo/fitness-club-in-luxury-hotel-interior.jpg?s=612x612&w=0&k=20&c=IkusSsZFq1kauP2FhSSw0Jmx92WuSSvlksesEZGw0ik=",
+            "https://c8.alamy.com/comp/B244P0/running-machines-in-a-generic-health-spa-gym-B244P0.jpg",
+            "https://media.istockphoto.com/id/2075354173/photo/fitness-couple-is-doing-kettlebell-twist-in-a-gym-togehter.jpg?s=612x612&w=0&k=20&c=lfs1V1d0YB33tn72myi6FElJnylPJYYM9lW5ZhlnYqY=",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZWrcdBxFUPxyatHy31ry4is4FRt7FdGZDjw&s",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSsXy5Bewpi4bQSqaMuulMqGSX5PLF23FJ0g&s",
+            "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3ltfGVufDB8fDB8fHww&fm=jpg&q=60&w=3000",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwCB7lqPZdNX-jtbzjvAWHuanRQId5WZz0PrP2E95QBADAAtoYdEtVdY7N2hN82LDRyPM&usqp=CAU",
+            "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Z3ltfGVufDB8fDB8fHww&fm=jpg&q=60&w=3000",
+            "https://img.freepik.com/photos-premium/moitie-femme-assise-table-orange_1048944-400826.jpg",
+            "https://img.freepik.com/free-photo/group-people-exercising-together-outdoors_23-2151061445.jpg?semt=ais_hybrid&w=740&q=80"
+        ];
+        
+        // Function to get random thumbnail
+        function getRandomThumbnail() {
+            return thumbnailPool[Math.floor(Math.random() * thumbnailPool.length)];
+        }
+        
+        // ============================================
         // CAROUSEL DATA - JSON Structure
         // ============================================
         const carouselData = [
@@ -435,6 +465,29 @@
                 container.innerHTML = ''; // Clear existing content
                 console.log('🎨 Generating', data.length, 'real cards');
                 
+                // Thumbnail pool for random selection
+                const thumbnailPool = [
+                    "https://youfit.com/wp-content/uploads/2024/06/YouFit-06-20-22-2527-Edit.jpg",
+                    "https://images.peopleimages.com/picture/202301/2578135-fitness-yoga-or-woman-stretching-in-gym-for-balance-flexible-spine-or-warm-up-body-with-healthy-breathing.-floor-breathe-or-zen-girl-in-training-exercise-or-workout-with-focus-or-flexibility--fit_400_400.jpg",
+                    "https://t4.ftcdn.net/jpg/02/43/13/15/360_F_243131531_jmNppYX9Ux2Hj2RV9yYR1swicwcYr8EQ.jpg",
+                    "https://media.istockphoto.com/id/464423718/photo/friends-exercise-in-gym.jpg?s=612x612&w=0&k=20&c=irmY7ahTerWqqVDJBRdx7aqi0HttRY9gTBLHzOdpLek=",
+                    "https://www.guardian.in/cdn/shop/articles/What-is-the-importance-of-physical-fitness.jpg?crop=center&height=1200&v=1741004149&width=1200",
+                    "https://gravity.fitness/cdn/shop/files/11-GravityFitness.webp?v=1749120795&width=767",
+                    "https://media.istockphoto.com/id/1679800838/fr/photo/gros-plan-des-pieds-coureur-sportif-courant-sur-tapis-roulant-dans-un-club-de-fitness.jpg?s=612x612&w=0&k=20&c=79oBrSnh-TItQCgTq1w5Aey2POgA-sU8wJzWMhHJmUM=",
+                    "https://www.shutterstock.com/image-photo/squat-woman-exercise-down-strengthen-260nw-2660361719.jpg",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvtWzabIH3STWW8YE5cOo1vluIYbAbTHgBkw&s",
+                    "https://media.istockphoto.com/id/610431768/photo/fitness-club-in-luxury-hotel-interior.jpg?s=612x612&w=0&k=20&c=IkusSsZFq1kauP2FhSSw0Jmx92WuSSvlksesEZGw0ik=",
+                    "https://c8.alamy.com/comp/B244P0/running-machines-in-a-generic-health-spa-gym-B244P0.jpg",
+                    "https://media.istockphoto.com/id/2075354173/photo/fitness-couple-is-doing-kettlebell-twist-in-a-gym-togehter.jpg?s=612x612&w=0&k=20&c=lfs1V1d0YB33tn72myi6FElJnylPJYYM9lW5ZhlnYqY=",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZWrcdBxFUPxyatHy31ry4is4FRt7FdGZDjw&s",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSsXy5Bewpi4bQSqaMuulMqGSX5PLF23FJ0g&s",
+                    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3ltfGVufDB8fDB8fHww&fm=jpg&q=60&w=3000",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwCB7lqPZdNX-jtbzjvAWHuanRQId5WZz0PrP2E95QBADAAtoYdEtVdY7N2hN82LDRyPM&usqp=CAU",
+                    "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Z3ltfGVufDB8fDB8fHww&fm=jpg&q=60&w=3000",
+                    "https://img.freepik.com/photos-premium/moitie-femme-assise-table-orange_1048944-400826.jpg",
+                    "https://img.freepik.com/free-photo/group-people-exercising-together-outdoors_23-2151061445.jpg?semt=ais_hybrid&w=740&q=80"
+                ];
+                
                 data.forEach(item => {
                     const card = document.createElement('div');
                     card.className = 'carousel-card';
@@ -454,8 +507,11 @@
                         scheduleDisplay = scheduleDisplay.replace(',', ' ·').replace(' AM', 'am').replace(' PM', 'pm');
                     }
                     
+                    // Use random thumbnail instead of API thumbnail
+                    const randomThumbnail = thumbnailPool[Math.floor(Math.random() * thumbnailPool.length)];
+                    
                     card.innerHTML = `
-                        <img src="${item.thumbnail}" alt="${item.activity_title}" class="carousel-img">
+                        <img src="${randomThumbnail}" alt="${item.activity_title}" class="carousel-img">
                         ${dayOfWeek ? `<div class="day-badge">${dayOfWeek}</div>` : ''}
                         <div class="carousel-content">
                             <h3>${item.activity_title}</h3>
@@ -1163,8 +1219,8 @@
                              },
                              stars: item.rating.average,
                              number_of_reviews: item.rating.count,
-                             review_status: item.rating.badge,
-                             thumbnail: item.thumbnailUrl
+                             review_status: item.rating.badge
+                             // No thumbnail - will use random from pool
                          }));
                          
                          generateCarouselCards(newCarouselData);
