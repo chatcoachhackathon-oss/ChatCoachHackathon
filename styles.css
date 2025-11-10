@@ -255,27 +255,25 @@ img {
     font-size: 20px !important;
     font-weight: 700 !important;
     line-height: 28px !important;
-    /* Create a large repeating gradient pattern */
     background: linear-gradient(
         90deg,
-        /* State 1 pattern */
-        #5F53FF 0%, #7F49CA 15.7%, #A696E7 31.25%,
-        /* Transition colors */
-        #C4B5F0 33.33%,
-        /* State 2 pattern */
-        #A696E7 33.33%, #7F49CA 46.63%, #5F53FF 53.3%,
-        /* Transition colors */
-        #4640DD 66.66%,
-        /* State 3 pattern */
-        #5F53FF 66.66%, #7F49CA 75.6%, #A696E7 91.66%,
-        /* Back to start */
-        #C4B5F0 100%
-    ) !important;
-    background-size: 300% 100% !important;
+        #5F53FF 0%,
+        #6E56E5 10%,
+        #7F49CA 20%,
+        #9063D7 30%,
+        #A696E7 40%,
+        #BAADE0 50%,
+        #CFC0F5 60%,
+        #A696E7 70%,
+        #7F49CA 80%,
+        #6E56E5 90%,
+        #5F53FF 100%
+    );
+    background-size: 200% 100%;
     background-clip: text !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
-    animation: gradientShiftText 8s ease-in-out infinite !important;
+    animation: textGradientFlow 4s linear infinite !important;
     color: transparent !important;
 }
 
@@ -283,32 +281,25 @@ img {
     content: '';
     background: linear-gradient(
         90deg,
-        #5F53FF 0%, #7F49CA 15.7%, #A696E7 31.25%,
-        #C4B5F0 33.33%,
-        #A696E7 33.33%, #7F49CA 46.63%, #5F53FF 53.3%,
-        #4640DD 66.66%,
-        #5F53FF 66.66%, #7F49CA 75.6%, #A696E7 91.66%,
-        #C4B5F0 100%
+        #5F53FF 0%,
+        #7F49CA 25%,
+        #A696E7 50%,
+        #7F49CA 75%,
+        #5F53FF 100%
     );
-    background-size: 300% 100%;
+    background-size: 200% 100%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: loadingDots 2.4s infinite, gradientShiftText 8s ease-in-out infinite;
+    animation: loadingDots 2s infinite, textGradientFlow 4s linear infinite;
 }
 
-@keyframes gradientShiftText {
+@keyframes textGradientFlow {
     0% {
-        background-position: 0% center;
-    }
-    33.33% {
-        background-position: 33.33% center;
-    }
-    66.66% {
-        background-position: 66.66% center;
+        background-position: 200% center;
     }
     100% {
-        background-position: 100% center;
+        background-position: 0% center;
     }
 }
 
