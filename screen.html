@@ -507,11 +507,11 @@
                         scheduleDisplay = scheduleDisplay.replace(',', ' ·').replace(' AM', 'am').replace(' PM', 'pm');
                     }
                     
-                    // Use random thumbnail instead of API thumbnail
-                    const randomThumbnail = thumbnailPool[Math.floor(Math.random() * thumbnailPool.length)];
+                    // Use thumbnail from item if available (hardcoded data), otherwise use random (API responses)
+                    const thumbnail = item.thumbnail || thumbnailPool[Math.floor(Math.random() * thumbnailPool.length)];
                     
                     card.innerHTML = `
-                        <img src="${randomThumbnail}" alt="${item.activity_title}" class="carousel-img">
+                        <img src="${thumbnail}" alt="${item.activity_title}" class="carousel-img">
                         ${dayOfWeek ? `<div class="day-badge">${dayOfWeek}</div>` : ''}
                         <div class="carousel-content">
                             <h3>${item.activity_title}</h3>
