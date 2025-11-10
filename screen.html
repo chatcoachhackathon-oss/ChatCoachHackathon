@@ -1010,6 +1010,9 @@
                      isGenerating = true;
                      disableAllButtons();
                      
+                     // Start generating animation on generate button
+                     generateBtn.classList.add('generating');
+                     
                      const sessionId = window.parent.sessionId || window.sessionId || 'SID-default';
                      
                      // Add "Getting alternate recommendations..." to chat
@@ -1022,16 +1025,19 @@
                          textarea.style.height = 'auto';
                      }
                      
-                     // Change title to generating state
+                     // Change title to "Generating schedule..." with gradient (matching generate button pattern)
                      sectionTitle.style.opacity = '0';
+                     
                      setTimeout(() => {
                          sectionTitle.textContent = 'Generating schedule';
+                         sectionTitle.classList.remove('ai-active', 'ai-completed');
                          sectionTitle.classList.add('ai-generating');
                          sectionTitle.style.opacity = '1';
+                         console.log('✨ Title updated to generating state (alternate recommendations)');
+                         
+                         // Show skeleton cards while loading
+                         generateSkeletonCards(3);
                      }, 200);
-                     
-                     // Show skeleton cards
-                     generateSkeletonCards(3);
                      
                      // Make API call with "Give me alternate recommendations"
                      makeAPICall('Give me alternate recommendations', sessionId, thinkingId);
