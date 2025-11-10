@@ -94,6 +94,7 @@
                             <div id="chat-messages"></div>
                             <!-- Textarea stays at bottom -->
                             <div class="ai-textarea-wrapper-inner">
+                                <textarea id="ai-textarea" class="ai-textarea" rows="1" placeholder="Plan your week with AI"></textarea>
                                 <!-- Feedback buttons (hidden by default) -->
                                 <div id="feedback-buttons" class="feedback-buttons hidden">
                                     <button id="thumbs-up-btn" class="feedback-btn" title="Helpful">
@@ -107,7 +108,6 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <textarea id="ai-textarea" class="ai-textarea" rows="1" placeholder="Plan your week with AI"></textarea>
                             </div>
                         </div>
                         <div class="ai-buttons">
@@ -654,6 +654,11 @@
                  chatMessagesContainer.innerHTML = '';
                  
                  chatHistory.forEach(message => {
+                     // Skip thinking messages (they should be replaced or removed)
+                     if (message.isThinking) {
+                         return;
+                     }
+                     
                      const msgDiv = document.createElement('div');
                      msgDiv.className = message.isBot ? 'bot-message' : 'user-message';
                      msgDiv.textContent = message.text;
@@ -1187,26 +1192,31 @@
                      console.log('📋 Has answer?', 'answer' in data);
                      console.log('📋 Has workout_schedule?', 'workout_schedule' in data);
                      
-                     console.log('Answer from API:', data.answer);
-                     console.log('Workout schedule:', data.workout_schedule);
-                     
-                     // Replace "Thinking..." with actual answer in chat history
-                     if (data.answer) {
-                         console.log('📝 Updating "Thinking..." with answer');
-                         updateChatMessage(thinkingMessageId, data.answer);
-                         console.log('✅ Answer added to chat history');
-                     } else {
-                         console.error('❌ No answer in response!', data);
-                         // Remove thinking message if no answer
-                         const thinkingIndex = chatHistory.findIndex(m => m.id === thinkingMessageId);
-                         if (thinkingIndex !== -1) {
-                             chatHistory.splice(thinkingIndex, 1);
-                             renderChatHistory();
-                         }
-                     }
-                     
-                     // Update carousel with workout schedule
-                     if (data.workout_schedule && data.workout_schedule.length > 0) {
+                    console.log('Answer from API:', data.answer);
+                    console.log('Workout schedule:', data.workout_schedule);
+                    
+                    // Always remove/replace "Thinking..." message when response arrives
+                    const thinkingIndex = chatHistory.findIndex(m => m.id === thinkingMessageId);
+                    if (thinkingIndex !== -1) {
+                        const hasAnswer = data.answer && typeof data.answer === 'string' && data.answer.trim().length > 0;
+                        
+                        if (hasAnswer) {
+                            // Replace "Thinking..." with actual answer
+                            console.log('📝 Updating "Thinking..." with answer');
+                            updateChatMessage(thinkingMessageId, data.answer.trim());
+                            console.log('✅ Answer added to chat history');
+                        } else {
+                            // Remove thinking message if no answer text (workouts will be shown in carousel)
+                            console.log('📝 Removing "Thinking..." message (no answer text, workouts will be shown)');
+                            chatHistory.splice(thinkingIndex, 1);
+                            renderChatHistory();
+                        }
+                    } else {
+                        console.warn('⚠️ Could not find thinking message with ID:', thinkingMessageId);
+                    }
+                    
+                    // Update carousel with workout schedule
+                    if (data.workout_schedule && data.workout_schedule.length > 0) {
                          console.log('🏋️ Updating carousel with', data.workout_schedule.length, 'workouts');
                          
                          const newCarouselData = data.workout_schedule.map(item => ({
