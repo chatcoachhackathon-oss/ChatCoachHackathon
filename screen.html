@@ -428,13 +428,22 @@
                     
                     // Format schedule slot for display (e.g., "Mon, 7:00 AM" → "Mon · 7:00am")
                     let scheduleDisplay = item.schedule_slot || '';
+                    let dayOfWeek = '';
+                    
                     if (scheduleDisplay) {
+                        // Extract day (first 3 letters before comma)
+                        const dayMatch = scheduleDisplay.match(/^([A-Za-z]{3})/);
+                        if (dayMatch) {
+                            dayOfWeek = dayMatch[1];
+                        }
+                        
                         // Remove comma, convert to lowercase am/pm
                         scheduleDisplay = scheduleDisplay.replace(',', ' ·').replace(' AM', 'am').replace(' PM', 'pm');
                     }
                     
                     card.innerHTML = `
                         <img src="${item.thumbnail}" alt="${item.activity_title}" class="carousel-img">
+                        ${dayOfWeek ? `<div class="day-badge">${dayOfWeek}</div>` : ''}
                         <div class="carousel-content">
                             <h3>${item.activity_title}</h3>
                             <p class="location">${scheduleDisplay} · ${item.credits_amount} credits</p>

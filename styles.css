@@ -507,10 +507,27 @@ svg {
     -webkit-tap-highlight-color: transparent;
     scroll-snap-align: start;
     transition: transform 0.2s;
+    position: relative;
 }
 
 .carousel-card:hover {
     transform: scale(1.02);
+}
+
+/* Day badge on thumbnail */
+.day-badge {
+    position: absolute;
+    left: 6px;
+    top: 4px;
+    padding: 4px 8px;
+    background: #E6F3FF;
+    border-radius: 5px;
+    color: #000000;
+    font-size: 12px;
+    font-family: var(--font-family);
+    font-weight: 700;
+    line-height: 16px;
+    z-index: 1;
 }
 
 .carousel-img {
