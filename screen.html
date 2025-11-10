@@ -668,9 +668,10 @@
                          // Show input box after title animation
                          setTimeout(() => {
                              aiInputBox.classList.remove('hidden');
-                             // Auto-focus the textarea
+                             // Auto-focus the textarea and ensure placeholder
                              const textarea = document.getElementById('ai-textarea');
                              if (textarea) {
+                                 textarea.placeholder = 'Plan your week with AI';
                                  setTimeout(() => textarea.focus(), 100);
                              }
                              // Initial button state (disabled when empty)
@@ -805,7 +806,11 @@
                          textarea.value = '';
                          textarea.style.height = 'auto';
                          textarea.disabled = true;
-                         textarea.placeholder = '';
+                         
+                         // Remove placeholder after first message
+                         if (chatHistory.length > 0) {
+                             textarea.placeholder = '';
+                         }
                          
                          // Add "Thinking..." message (will be replaced with answer)
                          const thinkingId = addChatMessage('Thinking...', true, true);
@@ -939,9 +944,10 @@
                              textarea.style.height = 'auto';
                          }
                          
-                         // Clear chat history
+                         // Clear chat history and restore placeholder
                          chatHistory = [];
                          renderChatHistory();
+                         textarea.placeholder = 'Plan your week with AI';
                      }, 300);
                      
                      // Reset title to "Recommended for you"
@@ -1139,7 +1145,10 @@
                      if (textarea) {
                          textarea.disabled = false;
                          textarea.readOnly = false;
-                         textarea.placeholder = 'Plan your week with AI';
+                         // Keep placeholder empty after first message
+                         if (chatHistory.length === 0) {
+                             textarea.placeholder = 'Plan your week with AI';
+                         }
                          textarea.style.color = '#000000';
                          console.log('📝 Textarea disabled after:', textarea.disabled);
                          console.log('✅ Textarea re-enabled and ready');
@@ -1188,7 +1197,10 @@
                      const textarea = document.getElementById('ai-textarea');
                      if (textarea) {
                          textarea.disabled = false;
-                         textarea.placeholder = 'Plan your week with AI';
+                         // Keep placeholder empty after first message
+                         if (chatHistory.length === 0) {
+                             textarea.placeholder = 'Plan your week with AI';
+                         }
                          setTimeout(() => textarea.focus(), 100);
                      }
                      
