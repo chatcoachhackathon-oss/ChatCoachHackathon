@@ -644,6 +644,52 @@ svg {
 .ai-textarea-wrapper-inner {
     padding: 0 16px 16px 16px;
     flex-shrink: 0;
+    position: relative;
+}
+
+/* Feedback buttons */
+.feedback-buttons {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    z-index: 10;
+}
+
+.feedback-buttons.hidden {
+    display: none;
+}
+
+.feedback-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feedback-btn:hover {
+    transform: scale(1.15);
+}
+
+.feedback-btn:active {
+    transform: scale(0.95);
+}
+
+.feedback-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.feedback-btn.selected svg path {
+    fill: #0055FF;
 }
 
 /* Bot message style (light gray) */
