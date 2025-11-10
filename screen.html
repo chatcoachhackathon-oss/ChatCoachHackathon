@@ -426,12 +426,19 @@
                     const card = document.createElement('div');
                     card.className = 'carousel-card';
                     
+                    // Format schedule slot for display (e.g., "Mon, 7:00 AM" → "Mon · 7:00am")
+                    let scheduleDisplay = item.schedule_slot || '';
+                    if (scheduleDisplay) {
+                        // Remove comma, convert to lowercase am/pm
+                        scheduleDisplay = scheduleDisplay.replace(',', ' ·').replace(' AM', 'am').replace(' PM', 'pm');
+                    }
+                    
                     card.innerHTML = `
                         <img src="${item.thumbnail}" alt="${item.activity_title}" class="carousel-img">
                         <div class="carousel-content">
-                            <h3>${item.studio.name}</h3>
-                            <p class="location">${item.studio.location}</p>
-                            <p class="tags">${item.activity_title}</p>
+                            <h3>${item.activity_title}</h3>
+                            <p class="location">${scheduleDisplay} · ${item.credits_amount} credits</p>
+                            <p class="tags"><span style="text-decoration: underline;">${item.studio.name}</span> · ${item.studio.location}</p>
                             <div class="rating">
                                 <span class="rating-score">${item.stars}</span>
                                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
