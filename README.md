@@ -191,7 +191,7 @@ To add more carousel items:
 
 **Endpoint**: 
 ```
-POST https://chatcoachhackathon.app.n8n.cloud/webhook/a889d2ae-2159-402f-b326-5f61e90f602e/chat
+POST https://hackathonchat.app.n8n.cloud/webhook/a889d2ae-2159-402f-b326-5f61e90f602e/chat
 ```
 
 **Request Format**:
